@@ -1,24 +1,36 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../../domain/models/skill_model.dart';
+import '../../data/repositories/skill_repository.dart';
 
 part 'assessment_provider.g.dart';
 
 @riverpod
-class Assessment extends _$Assessment {
+class AssessmentNotifier extends _$AssessmentNotifier {
   @override
-  Map<String, double> build() {
-    // Initial state: empty map of skill ratings
-    return {};
+  Future<List<SkillModel>> build() async {
+    final repository = ref.watch(skillRepositoryProvider);
+    return await repository.getSkillsToAssess();
   }
 
-  void updateSkillRating(String skillName, double rating) {
-    // Create a new map with the updated rating to trigger a state rebuild
-    state = {
-      ...state,
-      skillName: rating,
-    };
+  void updateSkillRating(String skillId, int newRating) {
+    if (state.value == null) return;
+    
+    final currentSkills = state.value!;
+    final updatedSkills = currentSkills.map((skill) {
+      if (skill.id == skillId) {
+        return skill.copyWith(currentRating: newRating);
+      }
+      return skill;
+    }).toList();
+
+    state = AsyncData(updatedSkills);
   }
-  
-  void clearRatings() {
-    state = {};
+
+  Future<void> submitAssessment() async {
+    if (state.value == null) return;
+    
+    // Switch to loading state or show overlay handled by UI
+    final repository = ref.read(skillRepositoryProvider);
+    await repository.submitAssessment(state.value!);
   }
 }

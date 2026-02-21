@@ -9,12 +9,12 @@ part of 'assessment_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(Assessment)
-final assessmentProvider = AssessmentProvider._();
+@ProviderFor(AssessmentNotifier)
+final assessmentProvider = AssessmentNotifierProvider._();
 
-final class AssessmentProvider
-    extends $NotifierProvider<Assessment, Map<String, double>> {
-  AssessmentProvider._()
+final class AssessmentNotifierProvider
+    extends $AsyncNotifierProvider<AssessmentNotifier, List<SkillModel>> {
+  AssessmentNotifierProvider._()
     : super(
         from: null,
         argument: null,
@@ -26,34 +26,28 @@ final class AssessmentProvider
       );
 
   @override
-  String debugGetCreateSourceHash() => _$assessmentHash();
+  String debugGetCreateSourceHash() => _$assessmentNotifierHash();
 
   @$internal
   @override
-  Assessment create() => Assessment();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(Map<String, double> value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<Map<String, double>>(value),
-    );
-  }
+  AssessmentNotifier create() => AssessmentNotifier();
 }
 
-String _$assessmentHash() => r'77eda04e25ceea26847d3273a565707a710bd95f';
+String _$assessmentNotifierHash() =>
+    r'f7cc753d80de9c1d23b37d449c1bba11df3ecdf3';
 
-abstract class _$Assessment extends $Notifier<Map<String, double>> {
-  Map<String, double> build();
+abstract class _$AssessmentNotifier extends $AsyncNotifier<List<SkillModel>> {
+  FutureOr<List<SkillModel>> build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref = this.ref as $Ref<Map<String, double>, Map<String, double>>;
+    final ref =
+        this.ref as $Ref<AsyncValue<List<SkillModel>>, List<SkillModel>>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<Map<String, double>, Map<String, double>>,
-              Map<String, double>,
+              AnyNotifier<AsyncValue<List<SkillModel>>, List<SkillModel>>,
+              AsyncValue<List<SkillModel>>,
               Object?,
               Object?
             >;

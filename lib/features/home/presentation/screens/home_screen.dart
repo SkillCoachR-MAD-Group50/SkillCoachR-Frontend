@@ -46,7 +46,6 @@ class HomeScreen extends StatelessWidget {
                         subtitle: 'AI assessment',
                         icon: PhosphorIcons.brain(),
                         color: Colors.blue,
-                        onTap: () => context.push('/assessment'),
                       ),
                       _NavCard(
                         title: 'Custom Paths',
@@ -203,21 +202,17 @@ class _NavCard extends StatelessWidget {
   final String subtitle;
   final IconData icon;
   final Color color;
-  final VoidCallback? onTap;
 
   const _NavCard({
     required this.title,
     required this.subtitle,
     required this.icon,
     required this.color,
-    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
+    return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -261,7 +256,6 @@ class _NavCard extends StatelessWidget {
           ),
         ],
       ),
-    ),
     );
   }
 }
@@ -309,7 +303,9 @@ class _BottomFooter extends StatelessWidget {
             width: double.infinity,
             height: 56,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                context.push('/assessment');
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 foregroundColor: const Color(0xFF0052D4),
