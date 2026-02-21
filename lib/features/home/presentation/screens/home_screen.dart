@@ -89,7 +89,7 @@ class _HeaderSection extends StatelessWidget {
       children: [
         Image.asset(
           'assets/images/logo.png',
-          height: 160,
+          height: 200,
           fit: BoxFit.contain,
         ),
         const SizedBox(height: 20),
