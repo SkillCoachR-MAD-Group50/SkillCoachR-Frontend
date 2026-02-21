@@ -14,35 +14,37 @@ class RatingSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Novice', style: GoogleFonts.inter(fontSize: 10, color: Colors.grey)),
-            Text('Expert', style: GoogleFonts.inter(fontSize: 10, color: Colors.grey)),
-          ],
+    return SliderTheme(
+      data: SliderThemeData(
+        activeTrackColor: const Color(0xFF1E3A8A), // Dark blue
+        inactiveTrackColor: const Color(0xFFF1F5F9), // Light grey
+        trackHeight: 12.0,
+        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 10.0),
+        thumbColor: Colors.white,
+        overlayColor: const Color(0xFF1E3A8A).withOpacity(0.2),
+        activeTickMarkColor: Colors.transparent,
+        inactiveTickMarkColor: Colors.transparent,
+      ),
+      child: Container(
+        // Adding a slight shadow to the container helps give the thumb that floating/bordered look
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+             BoxShadow(
+              color: Colors.black.withOpacity(0.02),
+              blurRadius: 5,
+              offset: const Offset(0, 2),
+            ),
+          ]
         ),
-        SliderTheme(
-          data: SliderThemeData(
-            activeTrackColor: AppTheme.lightTheme.colorScheme.primary,
-            inactiveTrackColor: Colors.grey.shade200,
-            thumbColor: Colors.white,
-            overlayColor: AppTheme.lightTheme.colorScheme.primary.withAlpha(51),
-            valueIndicatorColor: AppTheme.lightTheme.colorScheme.primary,
-            valueIndicatorTextStyle: const TextStyle(color: Colors.white),
-          ),
-          child: Slider(
-            value: currentRating.toDouble(),
-            min: 1,
-            max: 5,
-            divisions: 4,
-            label: currentRating.toString(),
-            onChanged: (value) => onChanged(value.toInt()),
-          ),
+        child: Slider(
+          value: currentRating.toDouble(),
+          min: 1,
+          max: 5,
+          divisions: 4,
+          onChanged: (value) => onChanged(value.toInt()),
         ),
-      ],
+      ),
     );
   }
 }
