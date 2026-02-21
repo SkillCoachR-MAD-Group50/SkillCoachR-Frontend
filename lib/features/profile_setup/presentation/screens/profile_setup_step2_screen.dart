@@ -3,21 +3,24 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:go_router/go_router.dart';
 
-class ProfileSetupScreen extends StatefulWidget {
-  const ProfileSetupScreen({super.key});
+class ProfileSetupStep2Screen extends StatefulWidget {
+  const ProfileSetupStep2Screen({super.key});
 
   @override
-  State<ProfileSetupScreen> createState() => _ProfileSetupScreenState();
+  State<ProfileSetupStep2Screen> createState() => _ProfileSetupStep2ScreenState();
 }
 
-class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
-  final TextEditingController _nameController = TextEditingController();
+class _ProfileSetupStep2ScreenState extends State<ProfileSetupStep2Screen> {
+  String? _selectedEducation;
 
-  @override
-  void dispose() {
-    _nameController.dispose();
-    super.dispose();
-  }
+  final List<String> _educationLevels = [
+    'High School',
+    'Associate Degree',
+    'Bachelor\'s Degree',
+    'Master\'s Degree',
+    'Doctorate (PhD)',
+    'Other/None'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                           ),
                         ),
                         Text(
-                          'Step 1 of 5',
+                          'Step 2 of 5',
                           style: GoogleFonts.inter(
                             fontSize: 12,
                             color: Colors.blueGrey,
@@ -64,12 +67,12 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: const BoxDecoration(
-                    color: Color(0xFFE3F2FD),
+                    color: Color(0xFFE0F2FE), // Light blue background for icon
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
-                    PhosphorIcons.user(),
-                    color: const Color(0xFF1976D2),
+                    PhosphorIcons.graduationCap(),
+                    color: const Color(0xFF0284C7), // Darker blue icon
                     size: 24,
                   ),
                 ),
@@ -91,7 +94,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     height: 4,
                     margin: EdgeInsets.only(right: index < 4 ? 6.0 : 0),
                     decoration: BoxDecoration(
-                      color: index == 0 ? const Color(0xFF00C7D4) : const Color(0xFFF1F5F9), // Teal for active, light grey for inactive
+                      color: index < 2 ? const Color(0xFF00C7D4) : const Color(0xFFF1F5F9), // Teal for active, light grey for inactive
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -152,7 +155,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                "Great to meet you! What should I call you?",
+                                "Your education background helps me understand your learning style.",
                                 style: GoogleFonts.inter(
                                   fontSize: 13,
                                   color: const Color(0xFF334155),
@@ -168,61 +171,29 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   
                   const SizedBox(height: 40),
                   
-                  // Avatar Section
-                  Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      Container(
-                        width: 96,
-                        height: 96,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: const Color(0xFF2563EB),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0xFF2563EB).withValues(alpha: 0.2),
-                              blurRadius: 20,
-                              offset: const Offset(0, 10),
-                            ),
-                          ],
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          _nameController.text.isNotEmpty ? _nameController.text[0].toUpperCase() : '',
-                          style: GoogleFonts.outfit(
-                            fontSize: 36,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: const BoxDecoration(
-                          color: Color(0xFF3B82F6),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(PhosphorIcons.user(), color: Colors.white, size: 14),
-                      ),
-                    ],
-                  ),
-                  
-                  const SizedBox(height: 16),
-                  Text(
-                    'Welcome, ${_nameController.text.isNotEmpty ? _nameController.text : "User"}!',
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      color: const Color(0xFF64748B),
+                  // Center Avatar Section
+                  Container(
+                    width: 96,
+                    height: 96,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xFFD8F3F1), // Light teal background
+                    ),
+                    alignment: Alignment.center,
+                    child: Icon(
+                      PhosphorIcons.graduationCap(),
+                      size: 48,
+                      color: const Color(0xFF0096B1), // Deep teal icon
                     ),
                   ),
                   
                   const SizedBox(height: 40),
                   
-                  // Name Input Section
+                  // Education Dropdown Section
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "What's your name?",
+                      "What's your education level?",
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -231,19 +202,37 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  TextFormField(
-                    controller: _nameController,
-                    onChanged: (val) => setState(() {}),
+                  DropdownButtonFormField<String>(
+                    value: _selectedEducation,
+                    icon: Icon(
+                      PhosphorIcons.caretDown(),
+                      color: const Color(0xFF94A3B8),
+                      size: 20,
+                    ),
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: const Color(0xFFF1F5F9), // Light greyish blue
+                      fillColor: const Color(0xFFF8FAFC), // very light grey background
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide.none,
                       ),
                       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                      hintText: 'Enter your name...',
-                      hintStyle: GoogleFonts.inter(
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.only(left: 16, right: 12),
+                        child: Icon(
+                          PhosphorIcons.graduationCap(PhosphorIconsStyle.fill),
+                          color: const Color(0xFF3A3A3A),
+                          size: 20,
+                        ),
+                      ),
+                      prefixIconConstraints: const BoxConstraints(
+                        minWidth: 48,
+                        minHeight: 24,
+                      ),
+                    ),
+                    hint: Text(
+                      'Select level',
+                      style: GoogleFonts.inter(
                         color: const Color(0xFF94A3B8),
                         fontSize: 14,
                       ),
@@ -252,6 +241,19 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                       color: const Color(0xFF334155),
                       fontSize: 14,
                     ),
+                    dropdownColor: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    items: _educationLevels.map((String level) {
+                      return DropdownMenuItem<String>(
+                        value: level,
+                        child: Text(level),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedEducation = newValue;
+                      });
+                    },
                   ),
                 ],
               ),
@@ -270,10 +272,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
               height: 54,
               child: ElevatedButton(
                 onPressed: () {
-                  context.pushNamed('profile_setup_step2');
+                  // Navigate to next step
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF2563EB),
+                  backgroundColor: const Color(0xFF3265D6), // match screenshot button shade
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
