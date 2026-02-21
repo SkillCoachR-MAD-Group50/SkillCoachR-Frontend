@@ -3,36 +3,25 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:go_router/go_router.dart';
 
-class ProfileSetupStep3Screen extends StatefulWidget {
-  const ProfileSetupStep3Screen({super.key});
+class ProfileSetupStep4Screen extends StatefulWidget {
+  const ProfileSetupStep4Screen({super.key});
 
   @override
-  State<ProfileSetupStep3Screen> createState() => _ProfileSetupStep3ScreenState();
+  State<ProfileSetupStep4Screen> createState() => _ProfileSetupStep4ScreenState();
 }
 
-class _ProfileSetupStep3ScreenState extends State<ProfileSetupStep3Screen> {
-  String? _selectedExperience;
-  String _selectedPill = 'Beginner';
+class _ProfileSetupStep4ScreenState extends State<ProfileSetupStep4Screen> {
+  String? _selectedGoal;
 
-  final List<String> _experienceLevels = [
-    'Beginner (0-1 years)',
-    'Intermediate (1-3 years)',
-    'Advanced (3-5 years)',
-    'Expert (5+ years)',
+  final List<String> _careerGoals = [
+    'UI/UX Designer',
+    'Frontend Developer',
+    'Backend Developer',
+    'Full Stack Developer',
+    'Data Scientist',
+    'Product Manager',
+    'Other'
   ];
-
-  final List<String> _experiencePills = [
-    'Beginner',
-    'Intermediate',
-    'Advanced',
-    'Expert',
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedExperience = _experienceLevels[0]; // Default to first item
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +55,7 @@ class _ProfileSetupStep3ScreenState extends State<ProfileSetupStep3Screen> {
                           ),
                         ),
                         Text(
-                          'Step 3 of 5',
+                          'Step 4 of 5',
                           style: GoogleFonts.inter(
                             fontSize: 12,
                             color: Colors.blueGrey,
@@ -83,8 +72,8 @@ class _ProfileSetupStep3ScreenState extends State<ProfileSetupStep3Screen> {
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
-                    PhosphorIcons.briefcase(),
-                    color: const Color(0xFF0D9488), // Teal icon
+                    PhosphorIcons.target(),
+                    color: const Color(0xFF0D9488), // Teal target icon top right
                     size: 24,
                   ),
                 ),
@@ -106,7 +95,7 @@ class _ProfileSetupStep3ScreenState extends State<ProfileSetupStep3Screen> {
                     height: 4,
                     margin: EdgeInsets.only(right: index < 4 ? 6.0 : 0),
                     decoration: BoxDecoration(
-                      color: index < 3 ? const Color(0xFF00C7D4) : const Color(0xFFF1F5F9), // Teal for active, light grey for inactive
+                      color: index < 4 ? const Color(0xFF00C7D4) : const Color(0xFFF1F5F9), // Teal for active (4 steps), light grey for inactive
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -167,7 +156,7 @@ class _ProfileSetupStep3ScreenState extends State<ProfileSetupStep3Screen> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                "This helps me set the right difficulty level for you.",
+                                "Perfect! I'll customize everything for this goal.",
                                 style: GoogleFonts.inter(
                                   fontSize: 13,
                                   color: const Color(0xFF334155),
@@ -193,19 +182,19 @@ class _ProfileSetupStep3ScreenState extends State<ProfileSetupStep3Screen> {
                     ),
                     alignment: Alignment.center,
                     child: Icon(
-                      PhosphorIcons.briefcase(),
+                      PhosphorIcons.target(),
                       size: 48,
-                      color: const Color(0xFF0D9488), // Deep teal icon
+                      color: const Color(0xFF10B981), // Green target icon
                     ),
                   ),
                   
                   const SizedBox(height: 40),
                   
-                  // Experience Level Dropdown
+                  // Career Goal Dropdown Section
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "What's your experience level?",
+                      "What's your career goal?",
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -215,7 +204,7 @@ class _ProfileSetupStep3ScreenState extends State<ProfileSetupStep3Screen> {
                   ),
                   const SizedBox(height: 8),
                   DropdownButtonFormField<String>(
-                    value: _selectedExperience,
+                    value: _selectedGoal,
                     icon: Icon(
                       PhosphorIcons.caretDown(),
                       color: const Color(0xFF94A3B8),
@@ -232,8 +221,8 @@ class _ProfileSetupStep3ScreenState extends State<ProfileSetupStep3Screen> {
                       prefixIcon: Padding(
                         padding: const EdgeInsets.only(left: 16, right: 12),
                         child: Icon(
-                          PhosphorIcons.leaf(PhosphorIconsStyle.fill),
-                          color: const Color(0xFF84CC16), // Light green leaf icon match
+                          PhosphorIcons.palette(PhosphorIconsStyle.fill),
+                          color: const Color(0xFFEAB308), // Yellowish/colorful palette icon
                           size: 20,
                         ),
                       ),
@@ -242,69 +231,30 @@ class _ProfileSetupStep3ScreenState extends State<ProfileSetupStep3Screen> {
                         minHeight: 24,
                       ),
                     ),
+                    hint: Text(
+                      'Select goal',
+                      style: GoogleFonts.inter(
+                        color: const Color(0xFF94A3B8),
+                        fontSize: 14,
+                      ),
+                    ),
                     style: GoogleFonts.inter(
                       color: const Color(0xFF334155),
                       fontSize: 14,
                     ),
                     dropdownColor: Colors.white,
                     borderRadius: BorderRadius.circular(12),
-                    items: _experienceLevels.map((String level) {
+                    items: _careerGoals.map((String goal) {
                       return DropdownMenuItem<String>(
-                        value: level,
-                        child: Text(level),
+                        value: goal,
+                        child: Text(goal),
                       );
                     }).toList(),
                     onChanged: (String? newValue) {
                       setState(() {
-                        _selectedExperience = newValue;
-                        // Auto-select the corresponding pill
-                        if (newValue != null) {
-                          _selectedPill = newValue.split(' ')[0];
-                        }
+                        _selectedGoal = newValue;
                       });
                     },
-                  ),
-                  
-                  const SizedBox(height: 24),
-                  
-                  // Selectable Pills
-                  Wrap(
-                    spacing: 8.0,
-                    runSpacing: 12.0,
-                    children: _experiencePills.map((pill) {
-                      final isSelected = _selectedPill == pill;
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _selectedPill = pill;
-                            // Auto-select the corresponding dropdown value
-                            _selectedExperience = _experienceLevels.firstWhere(
-                              (level) => level.startsWith(pill),
-                              orElse: () => _experienceLevels[0],
-                            );
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: isSelected ? const Color(0xFF0D9488) : const Color(0xFFF1F5F9), // Teal border for selected
-                              width: 1.5,
-                            ),
-                          ),
-                          child: Text(
-                            pill,
-                            style: GoogleFonts.inter(
-                              color: isSelected ? const Color(0xFF0D9488) : const Color(0xFF94A3B8), // Teal text for selected
-                              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
-                      );
-                    }).toList(),
                   ),
                 ],
               ),
@@ -323,7 +273,7 @@ class _ProfileSetupStep3ScreenState extends State<ProfileSetupStep3Screen> {
               height: 54,
               child: ElevatedButton(
                 onPressed: () {
-                  context.pushNamed('profile_setup_step4');
+                  // Navigate to next step
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF3265D6), // match screenshot button shade
