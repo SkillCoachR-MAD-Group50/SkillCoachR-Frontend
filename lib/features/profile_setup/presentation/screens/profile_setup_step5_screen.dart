@@ -324,7 +324,7 @@ class _ProfileSetupStep5ScreenState extends State<ProfileSetupStep5Screen> {
               height: 54,
               child: ElevatedButton(
                 onPressed: () {
-                  // Navigate to home / complete profile
+                  context.pushNamed('assessment');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF3265D6), // match screenshot button shade
