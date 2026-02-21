@@ -25,9 +25,9 @@ class AppTheme {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [
-      Color(0xFF0F2027), // Dark blue/black top
-      Color(0xFF203A43), // Mid blue
-      Color(0xFF2C5364), // Lighter blue bottom
+      Color(0xFF0F3A9D), // Deep vibrant blue top
+      Color(0xFF0F70C7), // Mid bright blue
+      Color(0xFF70CFE4), // Light cyan bottom
     ],
   );
   
