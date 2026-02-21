@@ -3,24 +3,36 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:go_router/go_router.dart';
 
-class ProfileSetupStep2Screen extends StatefulWidget {
-  const ProfileSetupStep2Screen({super.key});
+class ProfileSetupStep3Screen extends StatefulWidget {
+  const ProfileSetupStep3Screen({super.key});
 
   @override
-  State<ProfileSetupStep2Screen> createState() => _ProfileSetupStep2ScreenState();
+  State<ProfileSetupStep3Screen> createState() => _ProfileSetupStep3ScreenState();
 }
 
-class _ProfileSetupStep2ScreenState extends State<ProfileSetupStep2Screen> {
-  String? _selectedEducation;
+class _ProfileSetupStep3ScreenState extends State<ProfileSetupStep3Screen> {
+  String? _selectedExperience;
+  String _selectedPill = 'Beginner';
 
-  final List<String> _educationLevels = [
-    'High School',
-    'Associate Degree',
-    'Bachelor\'s Degree',
-    'Master\'s Degree',
-    'Doctorate (PhD)',
-    'Other/None'
+  final List<String> _experienceLevels = [
+    'Beginner (0-1 years)',
+    'Intermediate (1-3 years)',
+    'Advanced (3-5 years)',
+    'Expert (5+ years)',
   ];
+
+  final List<String> _experiencePills = [
+    'Beginner',
+    'Intermediate',
+    'Advanced',
+    'Expert',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedExperience = _experienceLevels[0]; // Default to first item
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +66,7 @@ class _ProfileSetupStep2ScreenState extends State<ProfileSetupStep2Screen> {
                           ),
                         ),
                         Text(
-                          'Step 2 of 5',
+                          'Step 3 of 5',
                           style: GoogleFonts.inter(
                             fontSize: 12,
                             color: Colors.blueGrey,
@@ -71,8 +83,8 @@ class _ProfileSetupStep2ScreenState extends State<ProfileSetupStep2Screen> {
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
-                    PhosphorIcons.graduationCap(),
-                    color: const Color(0xFF0284C7), // Darker blue icon
+                    PhosphorIcons.briefcase(),
+                    color: const Color(0xFF0D9488), // Teal icon
                     size: 24,
                   ),
                 ),
@@ -94,7 +106,7 @@ class _ProfileSetupStep2ScreenState extends State<ProfileSetupStep2Screen> {
                     height: 4,
                     margin: EdgeInsets.only(right: index < 4 ? 6.0 : 0),
                     decoration: BoxDecoration(
-                      color: index < 2 ? const Color(0xFF00C7D4) : const Color(0xFFF1F5F9), // Teal for active, light grey for inactive
+                      color: index < 3 ? const Color(0xFF00C7D4) : const Color(0xFFF1F5F9), // Teal for active, light grey for inactive
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -155,7 +167,7 @@ class _ProfileSetupStep2ScreenState extends State<ProfileSetupStep2Screen> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                "Your education background helps me understand your learning style.",
+                                "This helps me set the right difficulty level for you.",
                                 style: GoogleFonts.inter(
                                   fontSize: 13,
                                   color: const Color(0xFF334155),
@@ -181,19 +193,19 @@ class _ProfileSetupStep2ScreenState extends State<ProfileSetupStep2Screen> {
                     ),
                     alignment: Alignment.center,
                     child: Icon(
-                      PhosphorIcons.graduationCap(),
+                      PhosphorIcons.briefcase(),
                       size: 48,
-                      color: const Color(0xFF0096B1), // Deep teal icon
+                      color: const Color(0xFF0D9488), // Deep teal icon
                     ),
                   ),
                   
                   const SizedBox(height: 40),
                   
-                  // Education Dropdown Section
+                  // Experience Level Dropdown
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "What's your education level?",
+                      "What's your experience level?",
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -203,7 +215,7 @@ class _ProfileSetupStep2ScreenState extends State<ProfileSetupStep2Screen> {
                   ),
                   const SizedBox(height: 8),
                   DropdownButtonFormField<String>(
-                    value: _selectedEducation,
+                    value: _selectedExperience,
                     icon: Icon(
                       PhosphorIcons.caretDown(),
                       color: const Color(0xFF94A3B8),
@@ -220,8 +232,8 @@ class _ProfileSetupStep2ScreenState extends State<ProfileSetupStep2Screen> {
                       prefixIcon: Padding(
                         padding: const EdgeInsets.only(left: 16, right: 12),
                         child: Icon(
-                          PhosphorIcons.graduationCap(PhosphorIconsStyle.fill),
-                          color: const Color(0xFF3A3A3A),
+                          PhosphorIcons.leaf(PhosphorIconsStyle.fill),
+                          color: const Color(0xFF84CC16), // Light green leaf icon match
                           size: 20,
                         ),
                       ),
@@ -230,20 +242,13 @@ class _ProfileSetupStep2ScreenState extends State<ProfileSetupStep2Screen> {
                         minHeight: 24,
                       ),
                     ),
-                    hint: Text(
-                      'Select level',
-                      style: GoogleFonts.inter(
-                        color: const Color(0xFF94A3B8),
-                        fontSize: 14,
-                      ),
-                    ),
                     style: GoogleFonts.inter(
                       color: const Color(0xFF334155),
                       fontSize: 14,
                     ),
                     dropdownColor: Colors.white,
                     borderRadius: BorderRadius.circular(12),
-                    items: _educationLevels.map((String level) {
+                    items: _experienceLevels.map((String level) {
                       return DropdownMenuItem<String>(
                         value: level,
                         child: Text(level),
@@ -251,9 +256,55 @@ class _ProfileSetupStep2ScreenState extends State<ProfileSetupStep2Screen> {
                     }).toList(),
                     onChanged: (String? newValue) {
                       setState(() {
-                        _selectedEducation = newValue;
+                        _selectedExperience = newValue;
+                        // Auto-select the corresponding pill
+                        if (newValue != null) {
+                          _selectedPill = newValue.split(' ')[0];
+                        }
                       });
                     },
+                  ),
+                  
+                  const SizedBox(height: 24),
+                  
+                  // Selectable Pills
+                  Wrap(
+                    spacing: 8.0,
+                    runSpacing: 12.0,
+                    children: _experiencePills.map((pill) {
+                      final isSelected = _selectedPill == pill;
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _selectedPill = pill;
+                            // Auto-select the corresponding dropdown value
+                            _selectedExperience = _experienceLevels.firstWhere(
+                              (level) => level.startsWith(pill),
+                              orElse: () => _experienceLevels[0],
+                            );
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: isSelected ? const Color(0xFF0D9488) : const Color(0xFFF1F5F9), // Teal border for selected
+                              width: 1.5,
+                            ),
+                          ),
+                          child: Text(
+                            pill,
+                            style: GoogleFonts.inter(
+                              color: isSelected ? const Color(0xFF0D9488) : const Color(0xFF94A3B8), // Teal text for selected
+                              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ],
               ),
@@ -272,7 +323,7 @@ class _ProfileSetupStep2ScreenState extends State<ProfileSetupStep2Screen> {
               height: 54,
               child: ElevatedButton(
                 onPressed: () {
-                  context.pushNamed('profile_setup_step3');
+                  // Navigate to next step
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF3265D6), // match screenshot button shade
