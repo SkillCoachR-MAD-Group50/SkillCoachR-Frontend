@@ -5,6 +5,7 @@ import '../../features/assessment/presentation/screens/assessment_screen.dart';
 import '../../features/profile_setup/presentation/screens/profile_setup_screen.dart';
 import '../../features/profile_setup/presentation/screens/profile_setup_step2_screen.dart';
 import '../../features/profile_setup/presentation/screens/profile_setup_step3_screen.dart';
+import '../../features/profile_setup/presentation/screens/profile_setup_step4_screen.dart';
 
 part 'app_router.g.dart';
 
@@ -38,6 +39,11 @@ GoRouter appRouter(Ref ref) {
         path: '/profile-setup-step3',
         name: 'profile_setup_step3',
         builder: (context, state) => const ProfileSetupStep3Screen(),
+      ),
+      GoRoute(
+        path: '/profile-setup-step4',
+        name: 'profile_setup_step4',
+        builder: (context, state) => const ProfileSetupStep4Screen(),
       ),
     ],
   );
