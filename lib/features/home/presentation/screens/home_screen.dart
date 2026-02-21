@@ -15,63 +15,79 @@ class HomeScreen extends StatelessWidget {
           gradient: AppTheme.backgroundGradient,
         ),
         child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 20),
-              // Logo and Title
-              const _HeaderSection(),
-              const SizedBox(height: 30),
-              
-              // AI Coach Banner
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.0),
-                child: _AICoachBanner(),
-              ),
-              const SizedBox(height: 30),
-              
-              // Navigation Grid
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: GridView.count(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 16,
-                    childAspectRatio: 1.5,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      _NavCard(
-                        title: 'Smart Analysis',
-                        subtitle: 'AI assessment',
-                        icon: PhosphorIcons.brain(),
-                        color: Colors.blue,
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 20),
+                    // Logo and Title
+                    const _HeaderSection(),
+                    const SizedBox(height: 30),
+                    
+                    // AI Coach Banner
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.0),
+                      child: _AICoachBanner(),
+                    ),
+                    const SizedBox(height: 30),
+                    
+                    // Navigation Grid
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      child: GridView.count(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 16,
+                        crossAxisSpacing: 16,
+                        childAspectRatio: 1.5,
+                        children: [
+                          _NavCard(
+                            title: 'Smart Analysis',
+                            subtitle: 'AI assessment',
+                            icon: PhosphorIcons.brain(),
+                            color: Colors.blue,
+                          ),
+                          _NavCard(
+                            title: 'Custom Paths',
+                            subtitle: 'Tailored roadmaps',
+                            icon: PhosphorIcons.target(),
+                            color: Colors.teal,
+                          ),
+                          _NavCard(
+                            title: 'Track Progress',
+                            subtitle: 'Real-time analytics',
+                            icon: PhosphorIcons.chartLineUp(),
+                            color: Colors.orange,
+                          ),
+                          _NavCard(
+                            title: 'AI Guidance',
+                            subtitle: 'Smart tips',
+                            icon: PhosphorIcons.sparkle(),
+                            color: Colors.cyan,
+                          ),
+                        ],
                       ),
-                      _NavCard(
-                        title: 'Custom Paths',
-                        subtitle: 'Tailored roadmaps',
-                        icon: PhosphorIcons.target(),
-                        color: Colors.teal,
-                      ),
-                      _NavCard(
-                        title: 'Track Progress',
-                        subtitle: 'Real-time analytics',
-                        icon: PhosphorIcons.chartLineUp(),
-                        color: Colors.orange,
-                      ),
-                      _NavCard(
-                        title: 'AI Guidance',
-                        subtitle: 'Smart tips',
-                        icon: PhosphorIcons.sparkle(),
-                        color: Colors.cyan,
-                      ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
                 ),
               ),
               
-              // Bottom Footer
-              const _BottomFooter(),
+              const SliverFillRemaining(
+                hasScrollBody: false,
+                fillOverscroll: true,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Bottom Footer
+                    _BottomFooter(),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -87,23 +103,10 @@ class _HeaderSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Using a text representation for the logo until an asset is provided
-        Text(
-          'SKILLCOAChR',
-          style: GoogleFonts.outfit(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            letterSpacing: 2,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'Coach your skills. Master your future.',
-          style: GoogleFonts.outfit(
-            fontSize: 16,
-            color: Colors.white70,
-          ),
+        Image.asset(
+          'assets/images/logo.png',
+          width: 280,
+          fit: BoxFit.contain,
         ),
         const SizedBox(height: 20),
         Text(
