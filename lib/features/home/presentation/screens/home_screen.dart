@@ -88,7 +88,7 @@ class _HeaderSection extends StatelessWidget {
     return Column(
       children: [
         Image.asset(
-          'assets/images/logo.jpg',
+          'assets/images/logo.png',
           height: 160,
           fit: BoxFit.contain,
         ),
