@@ -87,15 +87,11 @@ class _HeaderSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Using a text representation for the logo until an asset is provided
-        Text(
-          'SKILLCOAChR',
-          style: GoogleFonts.outfit(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            letterSpacing: 2,
-          ),
+        // App Logo using provided image asset
+        Image.asset(
+          'assets/images/logo.png',
+          height: 60,
+          fit: BoxFit.contain,
         ),
         const SizedBox(height: 8),
         Text(
