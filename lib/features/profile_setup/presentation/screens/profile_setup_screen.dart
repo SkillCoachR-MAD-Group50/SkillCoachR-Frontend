@@ -11,7 +11,7 @@ class ProfileSetupScreen extends StatefulWidget {
 }
 
 class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
-  final TextEditingController _nameController = TextEditingController(text: "era");
+  final TextEditingController _nameController = TextEditingController();
 
   @override
   void dispose() {
