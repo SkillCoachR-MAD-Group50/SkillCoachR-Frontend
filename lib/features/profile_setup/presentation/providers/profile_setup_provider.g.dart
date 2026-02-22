@@ -20,7 +20,7 @@ final class ProfileSetupNotifierProvider
         argument: null,
         retry: null,
         name: r'profileSetupProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -42,7 +42,7 @@ final class ProfileSetupNotifierProvider
 }
 
 String _$profileSetupNotifierHash() =>
-    r'd4c9947f73d150c5233ad61561336a77dbeedc77';
+    r'397c81c9c5c42748eb5582828a79bed53d6ed8b6';
 
 abstract class _$ProfileSetupNotifier extends $Notifier<String?> {
   String? build();
