@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../domain/models/skill_model.dart';
 import '../../data/repositories/skill_repository.dart';
+import '../../../../features/profile_setup/presentation/providers/profile_setup_provider.dart';
 
 part 'assessment_provider.g.dart';
 
@@ -9,7 +10,8 @@ class AssessmentNotifier extends _$AssessmentNotifier {
   @override
   Future<List<SkillModel>> build() async {
     final repository = ref.watch(skillRepositoryProvider);
-    return await repository.getSkillsToAssess();
+    final careerGoal = ref.watch(profileSetupProvider);
+    return await repository.getSkillsToAssess(careerGoal);
   }
 
   void updateSkillRating(String skillId, int newRating) {
