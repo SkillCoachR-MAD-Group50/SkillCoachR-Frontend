@@ -2,7 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'profile_setup_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class ProfileSetupNotifier extends _$ProfileSetupNotifier {
   @override
   String? build() {
