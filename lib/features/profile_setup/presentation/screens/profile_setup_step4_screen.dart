@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/profile_setup_provider.dart';
 
-class ProfileSetupStep4Screen extends StatefulWidget {
+class ProfileSetupStep4Screen extends ConsumerStatefulWidget {
   const ProfileSetupStep4Screen({super.key});
 
   @override
-  State<ProfileSetupStep4Screen> createState() => _ProfileSetupStep4ScreenState();
+  ConsumerState<ProfileSetupStep4Screen> createState() => _ProfileSetupStep4ScreenState();
 }
 
-class _ProfileSetupStep4ScreenState extends State<ProfileSetupStep4Screen> {
+class _ProfileSetupStep4ScreenState extends ConsumerState<ProfileSetupStep4Screen> {
   String? _selectedGoal;
 
   final List<String> _careerGoals = [
@@ -273,6 +275,9 @@ class _ProfileSetupStep4ScreenState extends State<ProfileSetupStep4Screen> {
               height: 54,
               child: ElevatedButton(
                 onPressed: () {
+                  if (_selectedGoal != null) {
+                    ref.read(profileSetupProvider.notifier).setCareerGoal(_selectedGoal);
+                  }
                   context.pushNamed('profile_setup_step5');
                 },
                 style: ElevatedButton.styleFrom(

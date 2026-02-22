@@ -109,7 +109,7 @@ class AssessmentScreen extends ConsumerWidget {
                           ),
                         ),
                         Text(
-                          '${skills.length}/${skills.length} skills', // Hardcoding fully complete as mockup image implies
+                          '${skills.length}/${skills.length} skills',
                           style: GoogleFonts.inter(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
