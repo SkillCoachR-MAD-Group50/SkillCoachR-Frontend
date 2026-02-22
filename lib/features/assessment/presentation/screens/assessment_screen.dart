@@ -87,7 +87,7 @@ class AssessmentScreen extends ConsumerWidget {
           double progress = skills.isNotEmpty ? completedSkills / skills.length : 0.0;
           
           // Minimum visible progress for visual
-          if (progress < 0.1) progress = 0.1;
+          if (progress < 0.05) progress = 0.05;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -109,7 +109,7 @@ class AssessmentScreen extends ConsumerWidget {
                           ),
                         ),
                         Text(
-                          '${skills.length}/${skills.length} skills',
+                          '$completedSkills/${skills.length} skills',
                           style: GoogleFonts.inter(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -122,7 +122,7 @@ class AssessmentScreen extends ConsumerWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(4),
                       child: LinearProgressIndicator(
-                        value: 1.0, // Hardcoded to 100% per mockup, or use `progress`
+                        value: progress,
                         minHeight: 8,
                         backgroundColor: const Color(0xFFF1F5F9),
                         valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF1E3A8A)), // Dark blue
