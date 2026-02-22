@@ -34,7 +34,7 @@ final class AssessmentNotifierProvider
 }
 
 String _$assessmentNotifierHash() =>
-    r'f7cc753d80de9c1d23b37d449c1bba11df3ecdf3';
+    r'021259f15d818ec5f6428116dfd3b7f5e7049655';
 
 abstract class _$AssessmentNotifier extends $AsyncNotifier<List<SkillModel>> {
   FutureOr<List<SkillModel>> build();
