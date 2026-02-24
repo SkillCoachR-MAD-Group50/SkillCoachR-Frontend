@@ -12,10 +12,12 @@ class ProfileSetupScreen extends StatefulWidget {
 
 class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   final TextEditingController _nameController = TextEditingController();
+  final FocusNode _nameFocusNode = FocusNode();
 
   @override
   void dispose() {
     _nameController.dispose();
+    _nameFocusNode.dispose();
     super.dispose();
   }
 
@@ -78,9 +80,11 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
           ),
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
           // Segmented Progress Bar
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32.0),
@@ -242,6 +246,11 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   const SizedBox(height: 8),
                   TextFormField(
                     controller: _nameController,
+                    focusNode: _nameFocusNode,
+                    textInputAction: TextInputAction.next,
+                    onFieldSubmitted: (_) {
+                      context.pushNamed('profile_setup_step2');
+                    },
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: const Color(0xFFF1F5F9), // Light greyish blue
