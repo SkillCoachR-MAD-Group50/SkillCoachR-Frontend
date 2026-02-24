@@ -3,13 +3,18 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../providers/assessment_provider.dart';
+import '../../../profile_setup/presentation/providers/profile_setup_provider.dart';
 
-class GapAnalysisScreen extends StatelessWidget {
+class GapAnalysisScreen extends ConsumerWidget {
   const GapAnalysisScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final assessmentState = ref.watch(assessmentProvider);
+    final careerGoal = ref.watch(profileSetupProvider) ?? 'your career goal';
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -67,7 +72,19 @@ class GapAnalysisScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: SingleChildScrollView(
+      body: assessmentState.when(
+        data: (skills) {
+          if (skills.isEmpty) {
+            return const Center(child: Text('No skill data found.'));
+          }
+
+          // Calculate some dynamic info for insights
+          final targetRating = 4.5; // Placeholder benchmark
+          final criticalGaps = skills.where((s) => (targetRating - s.currentRating) >= 3).toList();
+          final sortedByGap = List.from(skills)..sort((a, b) => (targetRating - b.currentRating).compareTo(targetRating - a.currentRating));
+          final nextStepSkill = sortedByGap.isNotEmpty ? sortedByGap.first : skills.first;
+          
+          return SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -117,7 +134,7 @@ class GapAnalysisScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          "I've analyzed your skills against industry benchmarks. Here's what I found...",
+                          "I've analyzed your skills against industry benchmarks for $careerGoal. Here's what I found...",
                           style: GoogleFonts.inter(
                             fontSize: 13,
                             color: const Color(0xFF334155),
@@ -157,14 +174,7 @@ class GapAnalysisScreen extends StatelessWidget {
                           fillColor: const Color(0xFF94A3B8).withValues(alpha: 0.2), // Light gray fill
                           borderColor: const Color(0xFF94A3B8), // Gray line
                           entryRadius: 0,
-                          dataEntries: [
-                            const RadarEntry(value: 5),
-                            const RadarEntry(value: 4.5),
-                            const RadarEntry(value: 5),
-                            const RadarEntry(value: 4),
-                            const RadarEntry(value: 4.5),
-                            const RadarEntry(value: 4),
-                          ],
+                          dataEntries: skills.map((_) => RadarEntry(value: targetRating)).toList(),
                           borderWidth: 2,
                         ),
                         // User Current Skills
@@ -172,14 +182,7 @@ class GapAnalysisScreen extends StatelessWidget {
                           fillColor: const Color(0xFF3B82F6).withValues(alpha: 0.4), // Blue fill
                           borderColor: const Color(0xFF3B82F6), // Blue line
                           entryRadius: 3,
-                          dataEntries: [
-                            const RadarEntry(value: 2), // e.g., Backend
-                            const RadarEntry(value: 3), // e.g., Databases
-                            const RadarEntry(value: 1), // e.g., APIs
-                            const RadarEntry(value: 4), // e.g., Frontend
-                            const RadarEntry(value: 2), // e.g., Cloud
-                            const RadarEntry(value: 3), // e.g., Testing
-                          ],
+                          dataEntries: skills.map((s) => RadarEntry(value: s.currentRating.toDouble())).toList(),
                           borderWidth: 2,
                         ),
                       ],
@@ -191,9 +194,9 @@ class GapAnalysisScreen extends StatelessWidget {
                       tickBorderData: const BorderSide(color: Color(0xFFF1F5F9)),
                       gridBorderData: const BorderSide(color: Color(0xFFE2E8F0), width: 1.5),
                       getTitle: (index, angle) {
-                        final titles = ['Backend', 'Databases', 'APIs', 'Frontend', 'Cloud', 'Testing'];
+                        if (index < 0 || index >= skills.length) return const RadarChartTitle(text: '');
                         return RadarChartTitle(
-                          text: titles[index],
+                          text: skills[index].name,
                           angle: 0,
                           positionPercentageOffset: 0.1,
                         );
@@ -251,7 +254,7 @@ class GapAnalysisScreen extends StatelessWidget {
                         Icon(PhosphorIcons.warningCircle(PhosphorIconsStyle.fill), color: const Color(0xFFEF4444)),
                         const SizedBox(height: 8),
                         Text(
-                          'Critical Gap',
+                          criticalGaps.isNotEmpty ? 'Critical Gap' : 'On Track',
                           style: GoogleFonts.inter(
                             fontSize: 12,
                             color: const Color(0xFFB91C1C),
@@ -260,7 +263,7 @@ class GapAnalysisScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Focus on REST APIs',
+                          criticalGaps.isNotEmpty ? 'Focus on ${criticalGaps.first.name}' : 'Looking Good!',
                           style: GoogleFonts.outfit(
                             fontSize: 16,
                             color: const Color(0xFF7F1D1D),
@@ -295,7 +298,7 @@ class GapAnalysisScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Node.js Basics',
+                          nextStepSkill.name,
                           style: GoogleFonts.outfit(
                             fontSize: 16,
                             color: const Color(0xFF164E63),
@@ -323,35 +326,43 @@ class GapAnalysisScreen extends StatelessWidget {
             const SizedBox(height: 16),
             
             // Skill List
-            _buildSkillCard(
-              skillName: 'REST APIs',
-              currentLevel: 1.0,
-              targetLevel: 5.0,
-              priorityText: 'High Priority',
-              priorityColor: const Color(0xFFEF4444),
-              priorityBg: const Color(0xFFFEF2F2),
-              growthHint: '80% growth needed',
-            ),
-            const SizedBox(height: 12),
-            _buildSkillCard(
-              skillName: 'Backend (Node.js)',
-              currentLevel: 2.0,
-              targetLevel: 4.5,
-              priorityText: 'Medium Priority',
-              priorityColor: const Color(0xFFF59E0B),
-              priorityBg: const Color(0xFFFFFBEB),
-              growthHint: '50% growth needed',
-            ),
-            const SizedBox(height: 12),
-            _buildSkillCard(
-              skillName: 'Cloud Services',
-              currentLevel: 2.0,
-              targetLevel: 4.0,
-              priorityText: 'Medium Priority',
-              priorityColor: const Color(0xFFF59E0B),
-              priorityBg: const Color(0xFFFFFBEB),
-              growthHint: '40% growth needed',
-            ),
+            ...skills.map((skill) {
+              final gap = targetRating - skill.currentRating;
+              String priorityText;
+              Color priorityColor;
+              Color priorityBg;
+              
+              if (gap >= 3) {
+                priorityText = 'High Priority';
+                priorityColor = const Color(0xFFEF4444);
+                priorityBg = const Color(0xFFFEF2F2);
+              } else if (gap >= 1.5) {
+                priorityText = 'Medium Priority';
+                priorityColor = const Color(0xFFF59E0B);
+                priorityBg = const Color(0xFFFFFBEB);
+              } else {
+                priorityText = 'On Track';
+                priorityColor = const Color(0xFF10B981);
+                priorityBg = const Color(0xFFECFDF5);
+              }
+
+              final currentPct = skill.currentRating / 5.0;
+              final targetPct = targetRating / 5.0;
+              final growthNeeded = ((targetPct - currentPct) * 100).toInt();
+
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 12.0),
+                child: _buildSkillCard(
+                  skillName: skill.name,
+                  currentLevel: skill.currentRating.toDouble(),
+                  targetLevel: targetRating,
+                  priorityText: priorityText,
+                  priorityColor: priorityColor,
+                  priorityBg: priorityBg,
+                  growthHint: growthNeeded > 0 ? '$growthNeeded% growth needed' : 'Goal reached!',
+                ),
+              );
+            }),
             
             const SizedBox(height: 32),
             
@@ -387,8 +398,12 @@ class GapAnalysisScreen extends StatelessWidget {
                 ),
               ),
             ),
-          ],
-        ),
+            ],
+          ),
+        );
+      },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => Center(child: Text('Error: $err')),
       ),
     );
   }
