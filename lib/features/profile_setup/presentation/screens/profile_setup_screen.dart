@@ -284,8 +284,8 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                       }
                     : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF2563EB),
-                  foregroundColor: Colors.white,
+                  backgroundColor: _nameController.text.trim().isNotEmpty ? const Color(0xFF2563EB) : const Color(0xFFE2E8F0),
+                  foregroundColor: _nameController.text.trim().isNotEmpty ? Colors.white : const Color(0xFF94A3B8),
                   disabledBackgroundColor: const Color(0xFFE2E8F0),
                   disabledForegroundColor: const Color(0xFF94A3B8),
                   shape: RoundedRectangleBorder(
