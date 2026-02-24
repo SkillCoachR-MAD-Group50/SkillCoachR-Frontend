@@ -80,11 +80,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
           ),
         ),
       ),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
           // Segmented Progress Bar
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32.0),
@@ -173,60 +171,54 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   const SizedBox(height: 40),
                   
                   // Avatar Section
-                  ValueListenableBuilder<TextEditingValue>(
-                    valueListenable: _nameController,
-                    builder: (context, value, child) {
-                      final name = value.text;
-                      return Column(
+                  Column(
+                    children: [
+                      Stack(
+                        alignment: Alignment.bottomRight,
                         children: [
-                          Stack(
-                            alignment: Alignment.bottomRight,
-                            children: [
-                              Container(
-                                width: 96,
-                                height: 96,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: const Color(0xFF2563EB),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0xFF2563EB).withValues(alpha: 0.2),
-                                      blurRadius: 20,
-                                      offset: const Offset(0, 10),
-                                    ),
-                                  ],
+                          Container(
+                            width: 96,
+                            height: 96,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: const Color(0xFF2563EB),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0xFF2563EB).withValues(alpha: 0.2),
+                                  blurRadius: 20,
+                                  offset: const Offset(0, 10),
                                 ),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  name.isNotEmpty ? name[0].toUpperCase() : '',
-                                  style: GoogleFonts.outfit(
-                                    fontSize: 36,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                              ],
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              _nameController.text.trim().isNotEmpty ? _nameController.text.trim()[0].toUpperCase() : '',
+                              style: GoogleFonts.outfit(
+                                fontSize: 36,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
                               ),
-                              Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFF3B82F6),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(PhosphorIcons.user(), color: Colors.white, size: 14),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            'Welcome, ${name.isNotEmpty ? name : "User"}!',
-                            style: GoogleFonts.inter(
-                              fontSize: 14,
-                              color: const Color(0xFF64748B),
                             ),
                           ),
+                          Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(
+                              color: Color(0xFF3B82F6),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(PhosphorIcons.user(), color: Colors.white, size: 14),
+                          ),
                         ],
-                      );
-                    },
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Welcome, ${_nameController.text.trim().isNotEmpty ? _nameController.text.trim() : "User"}!',
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          color: const Color(0xFF64748B),
+                        ),
+                      ),
+                    ],
                   ),
                   
                   const SizedBox(height: 40),
@@ -247,9 +239,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   TextFormField(
                     controller: _nameController,
                     focusNode: _nameFocusNode,
-                    textInputAction: TextInputAction.next,
-                    onFieldSubmitted: (_) {
-                      context.pushNamed('profile_setup_step2');
+                    onTapOutside: (event) => _nameFocusNode.unfocus(),
+                    onChanged: (val) {
+                      setState(() {});
                     },
                     decoration: InputDecoration(
                       filled: true,
@@ -308,7 +300,6 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
             ),
           ),
         ],
-      ),
       ),
     );
   }
