@@ -274,15 +274,17 @@ class _ProfileSetupStep4ScreenState extends ConsumerState<ProfileSetupStep4Scree
               width: double.infinity,
               height: 54,
               child: ElevatedButton(
-                onPressed: () {
-                  if (_selectedGoal != null) {
-                    ref.read(profileSetupProvider.notifier).setCareerGoal(_selectedGoal);
-                  }
-                  context.pushNamed('profile_setup_step5');
-                },
+                onPressed: _selectedGoal != null
+                    ? () {
+                        ref.read(profileSetupProvider.notifier).setCareerGoal(_selectedGoal);
+                        context.pushNamed('profile_setup_step5');
+                      }
+                    : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF3265D6), // match screenshot button shade
-                  foregroundColor: Colors.white,
+                  backgroundColor: _selectedGoal != null ? const Color(0xFF3265D6) : const Color(0xFFE2E8F0), // match screenshot button shade
+                  foregroundColor: _selectedGoal != null ? Colors.white : const Color(0xFF94A3B8),
+                  disabledBackgroundColor: const Color(0xFFE2E8F0),
+                  disabledForegroundColor: const Color(0xFF94A3B8),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
