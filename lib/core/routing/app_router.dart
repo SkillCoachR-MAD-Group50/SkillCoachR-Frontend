@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/assessment/presentation/screens/assessment_screen.dart';
+import '../../features/assessment/presentation/screens/gap_analysis_screen.dart';
 import '../../features/profile_setup/presentation/screens/profile_setup_screen.dart';
 import '../../features/profile_setup/presentation/screens/profile_setup_step2_screen.dart';
 import '../../features/profile_setup/presentation/screens/profile_setup_step3_screen.dart';
@@ -25,6 +26,11 @@ GoRouter appRouter(Ref ref) {
         path: '/assessment',
         name: 'assessment',
         builder: (context, state) => const AssessmentScreen(),
+      ),
+      GoRoute(
+        path: '/gap-analysis',
+        name: 'gap_analysis',
+        builder: (context, state) => const GapAnalysisScreen(),
       ),
       GoRoute(
         path: '/profile-setup',
