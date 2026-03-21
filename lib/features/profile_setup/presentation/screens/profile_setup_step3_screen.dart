@@ -12,7 +12,7 @@ class ProfileSetupStep3Screen extends StatefulWidget {
 
 class _ProfileSetupStep3ScreenState extends State<ProfileSetupStep3Screen> {
   String? _selectedExperience;
-  String _selectedPill = 'Beginner';
+  String _selectedPill = '';
 
   final List<String> _experienceLevels = [
     'Beginner (0-1 years)',
@@ -31,7 +31,7 @@ class _ProfileSetupStep3ScreenState extends State<ProfileSetupStep3Screen> {
   @override
   void initState() {
     super.initState();
-    _selectedExperience = _experienceLevels[0]; // Default to first item
+    // Default removed to force user selection
   }
 
   @override
@@ -322,12 +322,16 @@ class _ProfileSetupStep3ScreenState extends State<ProfileSetupStep3Screen> {
               width: double.infinity,
               height: 54,
               child: ElevatedButton(
-                onPressed: () {
-                  context.pushNamed('profile_setup_step4');
-                },
+                onPressed: _selectedExperience != null
+                    ? () {
+                        context.pushNamed('profile_setup_step4');
+                      }
+                    : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF3265D6), // match screenshot button shade
-                  foregroundColor: Colors.white,
+                  backgroundColor: _selectedExperience != null ? const Color(0xFF3265D6) : const Color(0xFFE2E8F0), // match screenshot button shade
+                  foregroundColor: _selectedExperience != null ? Colors.white : const Color(0xFF94A3B8),
+                  disabledBackgroundColor: const Color(0xFFE2E8F0),
+                  disabledForegroundColor: const Color(0xFF94A3B8),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),

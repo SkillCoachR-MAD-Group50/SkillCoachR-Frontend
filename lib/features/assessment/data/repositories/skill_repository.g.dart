@@ -6,47 +6,22 @@ part of 'skill_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
+String _$skillRepositoryHash() => r'a17b9c79fe86762c17820ab239777a8c535bfaa2';
 
+/// See also [skillRepository].
 @ProviderFor(skillRepository)
-final skillRepositoryProvider = SkillRepositoryProvider._();
+final skillRepositoryProvider = AutoDisposeProvider<SkillRepository>.internal(
+  skillRepository,
+  name: r'skillRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$skillRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-final class SkillRepositoryProvider
-    extends
-        $FunctionalProvider<SkillRepository, SkillRepository, SkillRepository>
-    with $Provider<SkillRepository> {
-  SkillRepositoryProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'skillRepositoryProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$skillRepositoryHash();
-
-  @$internal
-  @override
-  $ProviderElement<SkillRepository> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  SkillRepository create(Ref ref) {
-    return skillRepository(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(SkillRepository value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<SkillRepository>(value),
-    );
-  }
-}
-
-String _$skillRepositoryHash() => r'cb9552b3d15c90e3a8f5f3faa09a655cf7eb2a6d';
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef SkillRepositoryRef = AutoDisposeProviderRef<SkillRepository>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

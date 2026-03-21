@@ -271,12 +271,16 @@ class _ProfileSetupStep2ScreenState extends State<ProfileSetupStep2Screen> {
               width: double.infinity,
               height: 54,
               child: ElevatedButton(
-                onPressed: () {
-                  context.pushNamed('profile_setup_step3');
-                },
+                onPressed: _selectedEducation != null
+                    ? () {
+                        context.pushNamed('profile_setup_step3');
+                      }
+                    : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF3265D6), // match screenshot button shade
-                  foregroundColor: Colors.white,
+                  backgroundColor: _selectedEducation != null ? const Color(0xFF3265D6) : const Color(0xFFE2E8F0), // match screenshot button shade
+                  foregroundColor: _selectedEducation != null ? Colors.white : const Color(0xFF94A3B8),
+                  disabledBackgroundColor: const Color(0xFFE2E8F0),
+                  disabledForegroundColor: const Color(0xFF94A3B8),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),

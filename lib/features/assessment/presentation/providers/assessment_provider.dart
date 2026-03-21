@@ -6,13 +6,14 @@ import '../../../../features/profile_setup/presentation/providers/profile_setup_
 part 'assessment_provider.g.dart';
 
 @riverpod
-class AssessmentNotifier extends _$AssessmentNotifier {
+class Assessment extends _$Assessment {
   @override
   Future<List<SkillModel>> build() async {
     final repository = ref.watch(skillRepositoryProvider);
     final careerGoal = ref.watch(profileSetupProvider);
     return await repository.getSkillsToAssess(careerGoal);
   }
+
 
   void updateSkillRating(String skillId, int newRating) {
     if (state.value == null) return;

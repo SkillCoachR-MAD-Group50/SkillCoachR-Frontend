@@ -6,58 +6,20 @@ part of 'profile_setup_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
+String _$profileSetupHash() => r'70098c446fe3b9377beb6e8898e6fc728278e29b';
 
-@ProviderFor(ProfileSetupNotifier)
-final profileSetupProvider = ProfileSetupNotifierProvider._();
+/// See also [ProfileSetup].
+@ProviderFor(ProfileSetup)
+final profileSetupProvider = NotifierProvider<ProfileSetup, String?>.internal(
+  ProfileSetup.new,
+  name: r'profileSetupProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$profileSetupHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-final class ProfileSetupNotifierProvider
-    extends $NotifierProvider<ProfileSetupNotifier, String?> {
-  ProfileSetupNotifierProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'profileSetupProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$profileSetupNotifierHash();
-
-  @$internal
-  @override
-  ProfileSetupNotifier create() => ProfileSetupNotifier();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(String? value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<String?>(value),
-    );
-  }
-}
-
-String _$profileSetupNotifierHash() =>
-    r'397c81c9c5c42748eb5582828a79bed53d6ed8b6';
-
-abstract class _$ProfileSetupNotifier extends $Notifier<String?> {
-  String? build();
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final ref = this.ref as $Ref<String?, String?>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<String?, String?>,
-              String?,
-              Object?,
-              Object?
-            >;
-    element.handleCreate(ref, build);
-  }
-}
+typedef _$ProfileSetup = Notifier<String?>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
