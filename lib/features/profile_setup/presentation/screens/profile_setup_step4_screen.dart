@@ -41,7 +41,13 @@ class _ProfileSetupStep4ScreenState extends ConsumerState<ProfileSetupStep4Scree
                   children: [
                     IconButton(
                       icon: Icon(PhosphorIcons.caretLeft(), color: Colors.black87),
-                      onPressed: () => context.pop(),
+                      onPressed: () {
+                        if (context.canPop()) {
+                          context.pop();
+                        } else {
+                          context.go('/profile-setup-step3');
+                        }
+                      },
                     ),
                     const SizedBox(width: 8),
                     Column(
