@@ -20,8 +20,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
   bool _isLoading = false;
+  bool _isLogin = true;
 
-  Future<void> _handleLogin() async {
+  Future<void> _handleSubmit() async {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter email and password')),
@@ -31,15 +32,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     setState(() => _isLoading = true);
     try {
-      await ref.read(authServiceProvider.notifier).signInWithEmailAndPassword(
-        _emailController.text.trim(),
-        _passwordController.text.trim(),
-      );
+      if (_isLogin) {
+        await ref.read(authServiceProvider.notifier).signInWithEmailAndPassword(
+          _emailController.text.trim(),
+          _passwordController.text.trim(),
+        );
+      } else {
+        await ref.read(authServiceProvider.notifier).signUpWithEmailAndPassword(
+          _emailController.text.trim(),
+          _passwordController.text.trim(),
+        );
+      }
       if (mounted) context.go('/profile-setup');
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login failed: ${e.toString().replaceAll('Exception: ', '')}')),
+          SnackBar(content: Text('${_isLogin ? 'Login' : 'Sign-up'} failed: ${e.toString().replaceAll('Exception: ', '')}')),
         );
       }
     } finally {
@@ -118,7 +126,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   
                   // Login Header
                   Text(
-                    'Welcome Back',
+                    _isLogin ? 'Welcome Back' : 'Create Account',
                     style: GoogleFonts.outfit(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
@@ -128,7 +136,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Sign in to continue your journey',
+                    _isLogin 
+                        ? 'Sign in to continue your journey' 
+                        : 'Join SkillCoachR to start growing',
                     style: GoogleFonts.inter(
                       fontSize: 16,
                       color: Colors.white70,
@@ -194,9 +204,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ),
                             const SizedBox(height: 24),
                             
-                            // Sign In Button
+                            // Sign In/Up Button
                             ElevatedButton(
-                              onPressed: _isLoading ? null : _handleLogin,
+                              onPressed: _isLoading ? null : _handleSubmit,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.white,
                                 foregroundColor: const Color(0xFF0052D4),
@@ -213,7 +223,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       child: CircularProgressIndicator(strokeWidth: 2),
                                     )
                                   : Text(
-                                      'Sign In',
+                                      _isLogin ? 'Sign In' : 'Sign Up',
                                       style: GoogleFonts.outfit(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -272,13 +282,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Don't have an account? ",
+                        _isLogin ? "Don't have an account? " : "Already have an account? ",
                         style: GoogleFonts.inter(color: Colors.white70),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () => setState(() => _isLogin = !_isLogin),
                         child: Text(
-                          'Sign Up',
+                          _isLogin ? 'Sign Up' : 'Sign In',
                           style: GoogleFonts.inter(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
