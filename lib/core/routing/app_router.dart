@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
+import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/assessment/presentation/screens/assessment_screen.dart';
 import '../../features/assessment/presentation/screens/gap_analysis_screen.dart';
 import '../../features/profile_setup/presentation/screens/profile_setup_screen.dart';
@@ -21,6 +22,11 @@ GoRouter appRouter(Ref ref) {
         path: '/',
         name: 'home',
         builder: (context, state) => const HomeScreen(),
+      ),
+      GoRoute(
+        path: '/login',
+        name: 'login',
+        builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
         path: '/assessment',
