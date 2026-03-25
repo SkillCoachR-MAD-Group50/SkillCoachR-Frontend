@@ -1,5 +1,8 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+
 import '../../domain/models/skill_model.dart';
 
 part 'skill_repository.g.dart';
@@ -102,7 +105,8 @@ class FakeSkillRepository implements SkillRepository {
 }
 
 @riverpod
-SkillRepository skillRepository(Ref ref) {
+SkillRepository skillRepository(SkillRepositoryRef ref) {
+
   // Return the fake implementation until Firebase is integrated
   return FakeSkillRepository();
 }

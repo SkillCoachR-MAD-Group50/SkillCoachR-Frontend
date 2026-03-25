@@ -4,9 +4,12 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/theme/app_theme.dart';
 import '../providers/assessment_provider.dart';
+
 import '../../../profile_setup/presentation/providers/profile_setup_provider.dart';
+import '../../../../core/services/ai_service.dart';
+import '../../../../core/services/app_prefs.dart';
+
 
 class GapAnalysisScreen extends ConsumerWidget {
   const GapAnalysisScreen({super.key});
@@ -367,37 +370,7 @@ class GapAnalysisScreen extends ConsumerWidget {
             const SizedBox(height: 32),
             
             // Generate Roadmap CTA
-            SizedBox(
-              width: double.infinity,
-              height: 54,
-              child: ElevatedButton(
-                onPressed: () {
-                  context.go('/dashboard');
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF3B82F6), // Blue
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  elevation: 0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Generate Learning Roadmap',
-                      style: GoogleFonts.inter(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Icon(PhosphorIcons.arrowRight()),
-                  ],
-                ),
-              ),
-            ),
+            _GenerateRoadmapButton(careerGoal: careerGoal),
             ],
           ),
         );
@@ -533,3 +506,87 @@ class GapAnalysisScreen extends ConsumerWidget {
     );
   }
 }
+
+class _GenerateRoadmapButton extends StatefulWidget {
+  final String careerGoal;
+  const _GenerateRoadmapButton({required this.careerGoal});
+
+  @override
+  State<_GenerateRoadmapButton> createState() => _GenerateRoadmapButtonState();
+}
+
+class _GenerateRoadmapButtonState extends State<_GenerateRoadmapButton> {
+  bool _loading = false;
+
+  Future<void> _generate() async {
+    setState(() => _loading = true);
+    try {
+      // For now, using careerGoal as both goal and target skill if we don't have a separate skill
+      final goal = widget.careerGoal;
+      final skill = widget.careerGoal; 
+      
+      final milestones = await AIService.generateRoadmap(goal, skill);
+      await AppPrefs.save(goal, skill, milestones);
+      
+      if (!mounted) return;
+      context.go('/dashboard', extra: {
+        'goal': goal,
+        'skill': skill,
+        'milestones': milestones,
+      });
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error generating roadmap: $e')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 54,
+      child: ElevatedButton(
+        onPressed: _loading ? null : _generate,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFF3B82F6), // Blue
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_loading)
+              const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
+              )
+            else ...[
+              Text(
+                'Generate Learning Roadmap',
+                style: GoogleFonts.inter(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Icon(PhosphorIcons.arrowRight()),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+

@@ -1,5 +1,7 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/assessment/presentation/screens/assessment_screen.dart';
 import '../../features/assessment/presentation/screens/gap_analysis_screen.dart';
@@ -8,11 +10,15 @@ import '../../features/profile_setup/presentation/screens/profile_setup_step2_sc
 import '../../features/profile_setup/presentation/screens/profile_setup_step3_screen.dart';
 import '../../features/profile_setup/presentation/screens/profile_setup_step4_screen.dart';
 import '../../features/profile_setup/presentation/screens/profile_setup_step5_screen.dart';
+import '../../features/roadmap/presentation/screens/roadmap_screen.dart';
+import '../models/milestone.dart';
+
 
 part 'app_router.g.dart';
 
 @riverpod
-GoRouter appRouter(Ref ref) {
+GoRouter appRouter(AppRouterRef ref) {
+
   return GoRouter(
     initialLocation: '/',
     debugLogDiagnostics: true,
@@ -57,6 +63,19 @@ GoRouter appRouter(Ref ref) {
         name: 'profile_setup_step5',
         builder: (context, state) => const ProfileSetupStep5Screen(),
       ),
+      GoRoute(
+        path: '/dashboard',
+        name: 'dashboard',
+        builder: (context, state) {
+          final extras = state.extra as Map<String, dynamic>?;
+          return RoadmapScreen(
+            goal: extras?['goal'] ?? '',
+            skill: extras?['skill'] ?? '',
+            milestones: (extras?['milestones'] as List?)?.cast<Milestone>() ?? [],
+          );
+        },
+      ),
     ],
   );
 }
+
