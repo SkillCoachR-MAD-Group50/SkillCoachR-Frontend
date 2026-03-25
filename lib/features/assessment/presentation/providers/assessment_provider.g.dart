@@ -6,51 +6,21 @@ part of 'assessment_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
+String _$assessmentHash() => r'07a63b425c460b6959d170854b07f1fc8d5b59ad';
 
-@ProviderFor(AssessmentNotifier)
-final assessmentProvider = AssessmentNotifierProvider._();
+/// See also [Assessment].
+@ProviderFor(Assessment)
+final assessmentProvider =
+    AutoDisposeAsyncNotifierProvider<Assessment, List<SkillModel>>.internal(
+      Assessment.new,
+      name: r'assessmentProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$assessmentHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
-final class AssessmentNotifierProvider
-    extends $AsyncNotifierProvider<AssessmentNotifier, List<SkillModel>> {
-  AssessmentNotifierProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'assessmentProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$assessmentNotifierHash();
-
-  @$internal
-  @override
-  AssessmentNotifier create() => AssessmentNotifier();
-}
-
-String _$assessmentNotifierHash() =>
-    r'48474ecc3c44e310a56375855209e9567ec91ad9';
-
-abstract class _$AssessmentNotifier extends $AsyncNotifier<List<SkillModel>> {
-  FutureOr<List<SkillModel>> build();
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final ref =
-        this.ref as $Ref<AsyncValue<List<SkillModel>>, List<SkillModel>>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<AsyncValue<List<SkillModel>>, List<SkillModel>>,
-              AsyncValue<List<SkillModel>>,
-              Object?,
-              Object?
-            >;
-    element.handleCreate(ref, build);
-  }
-}
+typedef _$Assessment = AutoDisposeAsyncNotifier<List<SkillModel>>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
