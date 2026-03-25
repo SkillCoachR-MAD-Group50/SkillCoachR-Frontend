@@ -537,7 +537,11 @@ class _GenerateRoadmapButtonState extends State<_GenerateRoadmapButton> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error generating roadmap: $e')),
+          SnackBar(
+            content: Text(e.toString().replaceAll('Exception: ', '')),
+            backgroundColor: Colors.redAccent,
+            duration: const Duration(seconds: 5),
+          ),
         );
       }
     } finally {

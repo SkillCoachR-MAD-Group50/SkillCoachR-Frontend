@@ -4,15 +4,25 @@ import '../models/milestone.dart';
 import '../models/quiz_question.dart';
 
 class AIService {
-  const apiKey = String.fromEnvironment('GROQ_API_KEY');
+  static const _apiKey = String.fromEnvironment('GROQ_API_KEY');
   static const String _model = 'llama-3.3-70b-versatile';
 
   static Future<String> _call(String prompt) async {
+    // Sanitize API key (remove non-ASCII characters and trim)
+    final sanitizedKey = _apiKey.replaceAll(RegExp(r'[^\x00-\x7F]+'), '').trim();
+
+    if (sanitizedKey.isEmpty) {
+      throw Exception(
+        'GROQ_API_KEY is not set. Please run the app with: '
+        '--dart-define=GROQ_API_KEY=your_key_here',
+      );
+    }
+
     final res = await http.post(
       Uri.parse('https://api.groq.com/openai/v1/chat/completions'),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer $_apiKey',
+        'Authorization': 'Bearer $sanitizedKey',
       },
       body: jsonEncode({
         'model': _model,
