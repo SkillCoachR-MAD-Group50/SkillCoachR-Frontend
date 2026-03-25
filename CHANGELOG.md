@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/compare/v1.1.0...v1.2.0) (2026-03-25)
+
+
+### Features
+
+* **auth:** finalize firebase initialization with android options ([c9457aa](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/c9457aa86de65bc65357b9a81539ce2631fc6727))
+* **auth:** implement smart routing, sign-out, and navigation stability fixes ([92ddb0d](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/92ddb0ddeb20645c262d59bb0327a22fc42526c5))
+
+
+### Bug Fixes
+
+* **auth:** resolve google_sign_in build errors by downgrading to v6.2.1 and using prefixed imports ([ad85d6a](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/ad85d6af7497889e236ea9e8634da333cd7e5c71))
+
 ## [1.1.0](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/compare/v1.0.0...v1.1.0) (2026-03-25)
 
 
