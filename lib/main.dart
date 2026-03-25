@@ -3,7 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/routing/app_router.dart';
 import 'core/theme/app_theme.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+// import 'firebase_options.dart'; // Uncomment after running 'flutterfire configure'
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize Firebase (will use google-services.json/GoogleService-Info.plist)
+  await Firebase.initializeApp(
+    // options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(
     const ProviderScope(
       child: SkillCoachRApp(),
