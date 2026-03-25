@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -27,21 +29,26 @@ GoRouter appRouter(AppRouterRef ref) {
   return GoRouter(
     initialLocation: '/',
     debugLogDiagnostics: true,
+    refreshListenable: _AppRouterRefreshStream(ref.watch(authServiceProvider.stream)),
     redirect: (context, state) {
       final user = authState.valueOrNull;
       final isLoggingIn = state.matchedLocation == '/login';
 
       if (user == null) {
-        // Protected routes that require login
+        // Protected routes that require login (including home)
         final protectedRoutes = [
+          '/',
           '/assessment',
           '/gap-analysis',
           '/profile-setup',
           '/dashboard',
         ];
 
-        if (protectedRoutes.any((route) => state.matchedLocation.startsWith(route))) {
-          return '/login';
+        if (protectedRoutes.any((route) => state.matchedLocation == route || state.matchedLocation.startsWith(route))) {
+          // Allow login page itself to be accessible
+          if (!isLoggingIn) {
+            return '/login';
+          }
         }
       } else {
         // If logged in, redirect away from login screen
@@ -112,5 +119,20 @@ GoRouter appRouter(AppRouterRef ref) {
       ),
     ],
   );
+}
+
+class _AppRouterRefreshStream extends ChangeNotifier {
+  _AppRouterRefreshStream(Stream<dynamic> stream) {
+    notifyListeners();
+    _subscription = stream.asBroadcastStream().listen((dynamic _) => notifyListeners());
+  }
+
+  late final StreamSubscription<dynamic> _subscription;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
 }
 
