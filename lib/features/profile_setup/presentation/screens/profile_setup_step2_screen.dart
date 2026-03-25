@@ -38,7 +38,13 @@ class _ProfileSetupStep2ScreenState extends State<ProfileSetupStep2Screen> {
                   children: [
                     IconButton(
                       icon: Icon(PhosphorIcons.caretLeft(), color: Colors.black87),
-                      onPressed: () => context.pop(),
+                      onPressed: () {
+                        if (context.canPop()) {
+                          context.pop();
+                        } else {
+                          context.go('/profile-setup');
+                        }
+                      },
                     ),
                     const SizedBox(width: 8),
                     Column(

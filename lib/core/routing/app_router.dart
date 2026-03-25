@@ -15,14 +15,43 @@ import '../../features/roadmap/presentation/screens/roadmap_screen.dart';
 import '../models/milestone.dart';
 
 
+import '../../features/auth/presentation/screens/login_screen.dart';
+import '../services/auth_service.dart';
+
 part 'app_router.g.dart';
 
 @riverpod
 GoRouter appRouter(AppRouterRef ref) {
+  final authState = ref.watch(authServiceProvider);
 
   return GoRouter(
     initialLocation: '/',
     debugLogDiagnostics: true,
+    redirect: (context, state) {
+      final user = authState.valueOrNull;
+      final isLoggingIn = state.matchedLocation == '/login';
+
+      if (user == null) {
+        // Protected routes that require login
+        final protectedRoutes = [
+          '/assessment',
+          '/gap-analysis',
+          '/profile-setup',
+          '/dashboard',
+        ];
+
+        if (protectedRoutes.any((route) => state.matchedLocation.startsWith(route))) {
+          return '/login';
+        }
+      } else {
+        // If logged in, redirect away from login screen
+        if (isLoggingIn) {
+          return '/';
+        }
+      }
+
+      return null;
+    },
     routes: [
       GoRoute(
         path: '/',

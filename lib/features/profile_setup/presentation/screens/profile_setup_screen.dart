@@ -37,7 +37,13 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   children: [
                     IconButton(
                       icon: Icon(PhosphorIcons.caretLeft(), color: Colors.black87),
-                      onPressed: () => context.pop(),
+                      onPressed: () {
+                        if (context.canPop()) {
+                          context.pop();
+                        } else {
+                          context.go('/');
+                        }
+                      },
                     ),
                     const SizedBox(width: 8),
                     Column(

@@ -59,4 +59,5 @@ class DefaultFirebaseOptions {
     projectId: 'skillcoachr',
     storageBucket: 'skillcoachr.firebasestorage.app',
   );
+
 }

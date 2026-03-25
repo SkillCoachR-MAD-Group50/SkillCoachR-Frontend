@@ -1,91 +1,123 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:go_router/go_router.dart';
-import '../../../../core/theme/app_theme.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/services/auth_service.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
           gradient: AppTheme.backgroundGradient,
         ),
         child: SafeArea(
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const SizedBox(height: 20),
-                    // Logo and Title
-                    const _HeaderSection(),
-                    const SizedBox(height: 30),
-                    
-                    // AI Coach Banner
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 24.0),
-                      child: _AICoachBanner(),
+          child: Stack(
+            children: [
+              CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const SizedBox(height: 20),
+                        // Logo and Title
+                        const _HeaderSection(),
+                        const SizedBox(height: 30),
+                        
+                        // AI Coach Banner
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 24.0),
+                          child: _AICoachBanner(),
+                        ),
+                        const SizedBox(height: 30),
+                        
+                        // Navigation Grid
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                          child: GridView.count(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 16,
+                            crossAxisSpacing: 16,
+                            childAspectRatio: 1.5,
+                            children: [
+                              _NavCard(
+                                title: 'Smart Analysis',
+                                subtitle: 'AI assessment',
+                                icon: PhosphorIcons.brain(),
+                                color: Colors.blue,
+                              ),
+                              _NavCard(
+                                title: 'Custom Paths',
+                                subtitle: 'Tailored roadmaps',
+                                icon: PhosphorIcons.target(),
+                                color: Colors.teal,
+                              ),
+                              _NavCard(
+                                title: 'Track Progress',
+                                subtitle: 'Real-time analytics',
+                                icon: PhosphorIcons.chartLineUp(),
+                                color: Colors.orange,
+                                ),
+                              _NavCard(
+                                title: 'AI Guidance',
+                                subtitle: 'Smart tips',
+                                icon: PhosphorIcons.sparkle(),
+                                color: Colors.cyan,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                      ],
                     ),
-                    const SizedBox(height: 30),
-                    
-                    // Navigation Grid
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child: GridView.count(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 16,
-                        crossAxisSpacing: 16,
-                        childAspectRatio: 1.5,
-                        children: [
-                          _NavCard(
-                            title: 'Smart Analysis',
-                            subtitle: 'AI assessment',
-                            icon: PhosphorIcons.brain(),
-                            color: Colors.blue,
+                  ),
+                  
+                  const SliverFillRemaining(
+                    hasScrollBody: false,
+                    fillOverscroll: true,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Bottom Footer
+                        _BottomFooter(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              // Logout Button in Top Right
+              Positioned(
+                top: 10,
+                right: 16,
+                child: IconButton(
+                  icon: Icon(PhosphorIcons.signOut(), color: Colors.white, size: 28),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        backgroundColor: const Color(0xFF1E293B),
+                        title: Text('Sign Out', style: GoogleFonts.outfit(color: Colors.white)),
+                        content: Text('Are you sure you want to sign out?', style: GoogleFonts.inter(color: Colors.white70)),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('Cancel', style: TextStyle(color: Colors.white60)),
                           ),
-                          _NavCard(
-                            title: 'Custom Paths',
-                            subtitle: 'Tailored roadmaps',
-                            icon: PhosphorIcons.target(),
-                            color: Colors.teal,
-                          ),
-                          _NavCard(
-                            title: 'Track Progress',
-                            subtitle: 'Real-time analytics',
-                            icon: PhosphorIcons.chartLineUp(),
-                            color: Colors.orange,
-                          ),
-                          _NavCard(
-                            title: 'AI Guidance',
-                            subtitle: 'Smart tips',
-                            icon: PhosphorIcons.sparkle(),
-                            color: Colors.cyan,
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              ref.read(authServiceProvider.notifier).signOut();
+                            },
+                            child: const Text('Sign Out', style: TextStyle(color: Colors.redAccent)),
                           ),
                         ],
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                  ],
-                ),
-              ),
-              
-              const SliverFillRemaining(
-                hasScrollBody: false,
-                fillOverscroll: true,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Bottom Footer
-                    _BottomFooter(),
-                  ],
+                    );
+                  },
                 ),
               ),
             ],

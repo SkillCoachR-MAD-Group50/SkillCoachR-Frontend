@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "681250557793-g8u08l4f3ps62msgvrutsemud53trqjf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.skillcoachr.skillcoachr_frontend",
+            "certificate_hash": "4cb29436d1ef8f474e689f40691c781f76c03add"
+          }
+        },
+        {
           "client_id": "681250557793-intirk7ed75ugonce0bg29kkpshle6a7.apps.googleusercontent.com",
           "client_type": 3
         }
