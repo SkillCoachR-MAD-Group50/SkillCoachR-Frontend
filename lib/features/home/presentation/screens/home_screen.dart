@@ -353,7 +353,7 @@ class _BottomFooter extends StatelessWidget {
             height: 56,
             child: ElevatedButton(
               onPressed: () {
-                context.push('/assessment');
+                context.push('/login');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,

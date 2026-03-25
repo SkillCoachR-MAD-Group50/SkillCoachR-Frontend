@@ -22,10 +22,40 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool _isLoading = false;
   bool _isLogin = true;
 
+  String _mapFirebaseError(String code) {
+    switch (code) {
+      case 'user-not-found':
+        return 'No user found with this email. Please sign up instead.';
+      case 'wrong-password':
+        return 'Incorrect password. Please try again.';
+      case 'invalid-email':
+        return 'The email address is not valid.';
+      case 'user-disabled':
+        return 'This account has been disabled.';
+      case 'email-already-in-use':
+        return 'An account already exists for this email.';
+      case 'operation-not-allowed':
+        return 'Authentication is not enabled for this method.';
+      case 'weak-password':
+        return 'The password is too weak. Use at least 6 characters.';
+      default:
+        return 'An unexpected error occurred. Please try again.';
+    }
+  }
+
   Future<void> _handleSubmit() async {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    if (email.isEmpty || !email.contains('@')) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter email and password')),
+        const SnackBar(content: Text('Please enter a valid email address')),
+      );
+      return;
+    }
+    if (password.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password must be at least 6 characters')),
       );
       return;
     }
@@ -33,21 +63,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     setState(() => _isLoading = true);
     try {
       if (_isLogin) {
-        await ref.read(authServiceProvider.notifier).signInWithEmailAndPassword(
-          _emailController.text.trim(),
-          _passwordController.text.trim(),
-        );
+        await ref.read(authServiceProvider.notifier).signInWithEmailAndPassword(email, password);
       } else {
-        await ref.read(authServiceProvider.notifier).signUpWithEmailAndPassword(
-          _emailController.text.trim(),
-          _passwordController.text.trim(),
-        );
+        await ref.read(authServiceProvider.notifier).signUpWithEmailAndPassword(email, password);
       }
       if (mounted) context.go('/profile-setup');
+    } on FirebaseAuthException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(_mapFirebaseError(e.code)),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${_isLogin ? 'Login' : 'Sign-up'} failed: ${e.toString().replaceAll('Exception: ', '')}')),
+          SnackBar(content: Text('Error: ${e.toString()}')),
         );
       }
     } finally {

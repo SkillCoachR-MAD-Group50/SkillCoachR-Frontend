@@ -52,10 +52,13 @@ GoRouter appRouter(AppRouterRef ref) {
           }
         }
       } else {
-        // If logged in, redirect away from login screen
+        // Allow browsing login screen if explicitly requested, but usually redirect home
+        // Removing the hard redirect away from login to respect the "Get Started" -> Login flow
+        /*
         if (isLoggingIn) {
           return '/';
         }
+        */
       }
 
       return null;
