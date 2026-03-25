@@ -3,7 +3,7 @@ name: release-please
 on:
   push:
     branches:
-      - backend
+      - main
 
 permissions:
   contents: write
@@ -20,7 +20,7 @@ jobs:
         id: release
         with:
           release-type: dart
-          target-branch: backend
+          target-branch: main
 
   build-and-release:
     needs: release-please
