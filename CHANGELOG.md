@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.3.0](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/compare/v1.2.0...v1.3.0) (2026-03-25)
+
+
+### Features
+
+* **auth:** complete sign-up flow and final navigation refinements ([a16b599](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/a16b599ce66c95ad4a06971f31529fc0ae7650da))
+* **auth:** implement explicit redirection, error mapping, and firestore sync ([d8543dc](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/d8543dc854044d67232c679f967d28a0e88f5ea4))
+* **navigation:** complete landing page flow and fix redirection circularity ([d58638a](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/d58638a08bcc26d94944e0286177ca0c2aaf4bdb))
+* **router:** add refreshListenable and protect home route ([e71a31e](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/e71a31eb7485febe77125c70a066aaeaf4117529))
+
+
+### Bug Fixes
+
+* **auth:** add missing firebase_auth import in LoginScreen ([3807e65](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/3807e6543b0b8b23e57f8141210a1d5a56b1a16e))
+* **router:** correct refreshListenable stream reference ([7320c40](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/7320c408ebead2a42eb2d4379013aa2d7a8d2298))
+
 ## [1.2.0](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/compare/v1.1.0...v1.2.0) (2026-03-25)
 
 
