@@ -19,6 +19,7 @@ import '../models/milestone.dart';
 
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../services/auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 part 'app_router.g.dart';
 
@@ -29,7 +30,8 @@ GoRouter appRouter(AppRouterRef ref) {
   return GoRouter(
     initialLocation: '/',
     debugLogDiagnostics: true,
-    refreshListenable: _AppRouterRefreshStream(ref.watch(authServiceProvider.stream)),
+    // Use the auth state stream as the trigger
+    refreshListenable: _AppRouterRefreshStream(FirebaseAuth.instance.authStateChanges()),
     redirect: (context, state) {
       final user = authState.valueOrNull;
       final isLoggingIn = state.matchedLocation == '/login';
