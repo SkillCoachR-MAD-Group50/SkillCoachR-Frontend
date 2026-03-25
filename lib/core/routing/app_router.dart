@@ -39,7 +39,6 @@ GoRouter appRouter(AppRouterRef ref) {
       if (user == null) {
         // Protected routes that require login (including home)
         final protectedRoutes = [
-          '/',
           '/assessment',
           '/gap-analysis',
           '/profile-setup',

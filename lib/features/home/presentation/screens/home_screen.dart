@@ -53,24 +53,28 @@ class HomeScreen extends ConsumerWidget {
                                 subtitle: 'AI assessment',
                                 icon: PhosphorIcons.brain(),
                                 color: Colors.blue,
+                                onTap: () => context.push('/assessment'),
                               ),
                               _NavCard(
                                 title: 'Custom Paths',
                                 subtitle: 'Tailored roadmaps',
                                 icon: PhosphorIcons.target(),
                                 color: Colors.teal,
+                                onTap: () => context.push('/profile-setup'),
                               ),
                               _NavCard(
                                 title: 'Track Progress',
                                 subtitle: 'Real-time analytics',
                                 icon: PhosphorIcons.chartLineUp(),
                                 color: Colors.orange,
+                                onTap: () => context.push('/dashboard'),
                                 ),
                               _NavCard(
                                 title: 'AI Guidance',
                                 subtitle: 'Smart tips',
                                 icon: PhosphorIcons.sparkle(),
                                 color: Colors.cyan,
+                                onTap: () => context.push('/assessment'),
                               ),
                             ],
                           ),
@@ -236,65 +240,70 @@ class _AICoachBanner extends StatelessWidget {
     );
   }
 }
-
 class _NavCard extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final IconData icon;
-  final Color color;
-
   const _NavCard({
     required this.title,
     required this.subtitle,
     required this.icon,
     required this.color,
+    this.onTap,
   });
+
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final Color color;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(13), // 0.05 opacity
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: color.withAlpha(26), // 0.1 opacity
-              shape: BoxShape.circle,
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(13), // 0.05 opacity
+              blurRadius: 10,
+              offset: const Offset(0, 5),
             ),
-            child: Icon(icon, color: color, size: 24),
-          ),
-          const Spacer(),
-          Text(
-            title,
-            style: GoogleFonts.outfit(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-              color: const Color(0xFF2C3E50),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: color.withAlpha(26), // 0.1 opacity
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: color, size: 24),
             ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            subtitle,
-            style: GoogleFonts.inter(
-              fontSize: 10,
-              color: Colors.blueGrey,
+            const Spacer(),
+            Text(
+              title,
+              style: GoogleFonts.outfit(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+                color: const Color(0xFF2C3E50),
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 2),
+            Text(
+              subtitle,
+              style: GoogleFonts.inter(
+                fontSize: 10,
+                color: Colors.blueGrey,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -344,7 +353,7 @@ class _BottomFooter extends StatelessWidget {
             height: 56,
             child: ElevatedButton(
               onPressed: () {
-                context.push('/login');
+                context.push('/assessment');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
