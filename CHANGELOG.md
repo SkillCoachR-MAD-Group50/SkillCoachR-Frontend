@@ -1,0 +1,28 @@
+# Changelog
+
+## 1.0.0 (2026-03-25)
+
+
+### Features
+
+* Add 6 skills based on career goal in Assessment Module ([79069c3](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/79069c34b7c7682dc17ed17c48d5cbf1a7f9e109))
+* **assessment:** implement skill gap analysis screen and radar chart ([1db4382](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/1db4382815874df8e592c35545b8b1a2d9875381))
+* **assessment:** render real data in gap analysis screen using Riverpod ([9abdfa4](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/9abdfa43ed109b2563b1d679f13e284bc607ca30))
+* Calculate skill-assessment dynamic progress based on user ratings ([0ac397c](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/0ac397c2b0e6a5ec7c6a185f8de76a947675e058))
+* Implement Dynamic Skill Gap Analysis Screen ([cc4ad71](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/cc4ad71d9755cc6fc8759f248487d091a9717444))
+* implement Profile Setup Step 2 screen and navigation ([94de5f1](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/94de5f16d70b95d65f606af39a9139dd51946dcd))
+* implement Profile Setup Step 3 screen and navigation ([97b769e](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/97b769e00b6fc867a8eceb77c01ae62f0ac70c8a))
+* implement Profile Setup Step 4 screen and navigation ([1ef4022](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/1ef4022b6df3c8bf6958035822bd4d5bbf4a139f))
+* implement Profile Setup Step 5 screen with dynamic time slider ([1001eb4](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/1001eb43bf043362bdbf7ba3babc636c503e7287))
+
+
+### Bug Fixes
+
+* **ai:** sanitize api key and improve error handling ([70cb242](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/70cb242a93b0521dfccdea85f122804abac69c89))
+* Prevent ProfileSetupProvider from auto-disposing ([3e3b752](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/3e3b7521520ab4e210721b356e1d7e38696c949c))
+* **profile:** fix missing parenthesis syntax error ([e3fb058](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/e3fb05854ff1848b7ee9d4fa4e6f6517a04183f4))
+* **profile:** handle physical keyboard input correctly by trimming spaces ([6cf48fe](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/6cf48fe667dd9ba2fc6d4a77d0a2ca337809dabb))
+* **profile:** improve text field robustness and add physical keyboard submit action ([08da588](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/08da5885d77883ff5d280e6fcfcd55375855cdaa))
+* **profile:** prevent name input from losing focus in step 1 ([75454d6](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/75454d6663f887bf8630bc81c575f06ddf4d8f25))
+* redirect to assessment page after complete setup ([dcf98d0](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/dcf98d071241d6cf4c4cf1afe58c6b69b0a51c20))
+* remove default 'era' value from profile setup name input ([b1de697](https://github.com/SkillCoachR-MAD-Group50/SkillCoachR-Frontend/commit/b1de6975260574b70f0c0594f55ab0f30eed630a))
