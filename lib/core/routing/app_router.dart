@@ -1,8 +1,11 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../features/home/presentation/screens/home_screen.dart';
+import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/assessment/presentation/screens/assessment_screen.dart';
 import '../../features/assessment/presentation/screens/gap_analysis_screen.dart';
 import '../../features/profile_setup/presentation/screens/profile_setup_screen.dart';
@@ -14,19 +17,62 @@ import '../../features/roadmap/presentation/screens/roadmap_screen.dart';
 import '../models/milestone.dart';
 
 
+import '../../features/auth/presentation/screens/login_screen.dart';
+import '../services/auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 part 'app_router.g.dart';
 
 @riverpod
 GoRouter appRouter(AppRouterRef ref) {
+  final authState = ref.watch(authServiceProvider);
 
   return GoRouter(
     initialLocation: '/',
     debugLogDiagnostics: true,
+    // Use the auth state stream as the trigger
+    refreshListenable: _AppRouterRefreshStream(FirebaseAuth.instance.authStateChanges()),
+    redirect: (context, state) {
+      final user = authState.valueOrNull;
+      final isLoggingIn = state.matchedLocation == '/login';
+
+      if (user == null) {
+        // Protected routes that require login (including home)
+        final protectedRoutes = [
+          '/assessment',
+          '/gap-analysis',
+          '/profile-setup',
+          '/dashboard',
+        ];
+
+        if (protectedRoutes.any((route) => state.matchedLocation == route || state.matchedLocation.startsWith(route))) {
+          // Allow login page itself to be accessible
+          if (!isLoggingIn) {
+            return '/login';
+          }
+        }
+      } else {
+        // Allow browsing login screen if explicitly requested, but usually redirect home
+        // Removing the hard redirect away from login to respect the "Get Started" -> Login flow
+        /*
+        if (isLoggingIn) {
+          return '/';
+        }
+        */
+      }
+
+      return null;
+    },
     routes: [
       GoRoute(
         path: '/',
         name: 'home',
         builder: (context, state) => const HomeScreen(),
+      ),
+      GoRoute(
+        path: '/login',
+        name: 'login',
+        builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
         path: '/assessment',
@@ -77,5 +123,20 @@ GoRouter appRouter(AppRouterRef ref) {
       ),
     ],
   );
+}
+
+class _AppRouterRefreshStream extends ChangeNotifier {
+  _AppRouterRefreshStream(Stream<dynamic> stream) {
+    notifyListeners();
+    _subscription = stream.asBroadcastStream().listen((dynamic _) => notifyListeners());
+  }
+
+  late final StreamSubscription<dynamic> _subscription;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
 }
 

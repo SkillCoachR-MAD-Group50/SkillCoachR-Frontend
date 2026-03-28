@@ -19,32 +19,25 @@ jobs:
       - uses: google-github-actions/release-please-action@v4
         id: release
         with:
-          release-type: dart
-          target-branch: main
+          release-type: simple
 
-  build-and-release:
+  
+  build-and-release-apk:
     needs: release-please
     if: ${{ needs.release-please.outputs.release_created }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          cache: true
-          
-      - name: Install dependencies
-        run: flutter pub get
-        
-      - name: Build APK
-        run: flutter build apk --release
-        
-      - name: Upload Release Asset
-        uses: softprops/action-gh-release@v1
+      
+      - run: flutter pub get
+      - run: flutter build apk --release 
+
+      
+      - name: Upload APK to Release
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.release-please.outputs.tag_name }}
           files: build/app/outputs/flutter-apk/app-release.apk
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
