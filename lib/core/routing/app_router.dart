@@ -11,8 +11,8 @@ import '../../features/profile_setup/presentation/screens/profile_setup_step3_sc
 import '../../features/profile_setup/presentation/screens/profile_setup_step4_screen.dart';
 import '../../features/profile_setup/presentation/screens/profile_setup_step5_screen.dart';
 import '../../features/roadmap/presentation/screens/roadmap_screen.dart';
+import '../../features/splash/presentation/screens/splash_screen.dart';
 import '../models/milestone.dart';
-
 
 part 'app_router.g.dart';
 
@@ -20,9 +20,14 @@ part 'app_router.g.dart';
 GoRouter appRouter(AppRouterRef ref) {
 
   return GoRouter(
-    initialLocation: '/',
+    initialLocation: '/splash',
     debugLogDiagnostics: true,
     routes: [
+      GoRoute(
+        path: '/splash',
+        name: 'splash',
+        builder: (context, state) => const SplashScreen(),
+      ),
       GoRoute(
         path: '/',
         name: 'home',
