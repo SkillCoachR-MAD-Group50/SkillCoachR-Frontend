@@ -11,6 +11,8 @@ import '../../features/profile_setup/presentation/screens/profile_setup_step3_sc
 import '../../features/profile_setup/presentation/screens/profile_setup_step4_screen.dart';
 import '../../features/profile_setup/presentation/screens/profile_setup_step5_screen.dart';
 import '../../features/roadmap/presentation/screens/roadmap_screen.dart';
+import '../../features/auth/presentation/screens/login_screen.dart';
+import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/splash/presentation/screens/splash_screen.dart';
 import '../models/milestone.dart';
 
@@ -27,6 +29,16 @@ GoRouter appRouter(AppRouterRef ref) {
         path: '/splash',
         name: 'splash',
         builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: '/login',
+        name: 'login',
+        builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: '/register',
+        name: 'register',
+        builder: (context, state) => const RegisterScreen(),
       ),
       GoRoute(
         path: '/',
