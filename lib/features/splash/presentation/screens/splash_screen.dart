@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -15,6 +16,10 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _opacityAnimation;
+
+  bool _animationCompleted = false;
+  bool _authResolved = false;
+  bool _isLoggedIn = false;
 
   @override
   void initState() {
@@ -40,11 +45,48 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
+    _checkAuthState();
+
     Future.delayed(const Duration(seconds: 3), () {
       if (mounted) {
-        context.go('/home');
+        setState(() {
+          _animationCompleted = true;
+        });
+        _navigateIfReady();
       }
     });
+  }
+
+  Future<void> _checkAuthState() async {
+    try {
+      final user = await FirebaseAuth.instance.authStateChanges().first;
+      if (mounted) {
+        setState(() {
+          _isLoggedIn = user != null;
+          _authResolved = true;
+        });
+        _navigateIfReady();
+      }
+    } catch (e) {
+      debugPrint('Auth check error: $e');
+      if (mounted) {
+        setState(() {
+          _isLoggedIn = false;
+          _authResolved = true;
+        });
+        _navigateIfReady();
+      }
+    }
+  }
+
+  void _navigateIfReady() {
+    if (_animationCompleted && _authResolved) {
+      if (_isLoggedIn) {
+        context.go('/');
+      } else {
+        context.go('/login');
+      }
+    }
   }
 
   @override
