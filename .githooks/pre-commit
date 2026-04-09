@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# A foolproof pre-commit hook to catch secrets before they are committed.
+
+echo "🔒 Running SkillCoachR Security Pre-commit Hook..."
+
+# 1. Prevent ANY .env file from being committed (except .env.example)
+STAGED_ENV_FILES=$(git diff --cached --name-only | grep -E '\.env$|\.env\.[^e]')
+
+if [ -n "$STAGED_ENV_FILES" ]; then
+    echo "❌ ERROR: You are trying to commit a .env file!"
+    echo "The following files must be unstaged:"
+    echo "$STAGED_ENV_FILES"
+    echo "Use 'git restore --staged <file>' to unstage them."
+    exit 1
+fi
+
+# 2. Scan staged files for known secret patterns
+# Pattern 1: Firebase API keys (AIzaSy...)
+# Pattern 2: Groq API keys (gsk_...)
+SECRET_PATTERN="(AIza[0-9A-Za-z-_]{35}|gsk_[0-9A-Za-z]{40,})"
+
+STAGED_FILES=$(git diff --cached --name-only | grep -v '\.example$')
+
+if [ -n "$STAGED_FILES" ]; then
+    for FILE in $STAGED_FILES; do
+        # Check if file has secret pattern
+        if git show ":$FILE" | grep -qE "$SECRET_PATTERN"; then
+            echo "❌ ERROR: Potential API Key leak detected in staged file:"
+            echo "File: $FILE"
+            echo ""
+            echo "Please remove the API key, use environment variables, and try again."
+            exit 1
+        fi
+    done
+fi
+
+echo "✅ Security check passed. Committing..."
+exit 0
