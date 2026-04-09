@@ -296,6 +296,28 @@ class _MilestoneScreenState extends State<MilestoneScreen> {
                             ),
                     ),
                   ),
+                  const SizedBox(height: 12),
+                  if (!m.completed)
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          widget.milestone.completed = true;
+                        });
+                        widget.onScoreUpdated();
+                        Navigator.pop(context);
+                      },
+                      style: TextButton.styleFrom(
+                        foregroundColor: const Color(0xFF64748B),
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                      ),
+                      child: Text(
+                        'Skip Phase',
+                        style: GoogleFonts.inter(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),

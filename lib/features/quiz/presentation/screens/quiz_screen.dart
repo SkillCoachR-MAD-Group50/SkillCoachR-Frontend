@@ -55,7 +55,7 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
     });
   }
 
-  void _next() {
+  Future<void> _next() async {
     if (_index < widget.questions.length - 1) {
       setState(() {
         _index++;
@@ -66,7 +66,7 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
       _slideCtrl.forward();
     } else {
       final score = ((_correct / widget.questions.length) * 100).round();
-      Navigator.pushReplacement(
+      final result = await Navigator.push<int?>(
         context,
         MaterialPageRoute(
           builder: (_) => QuizResultScreen(
@@ -77,6 +77,9 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
           ),
         ),
       );
+      if (mounted) {
+        Navigator.pop(context, result);
+      }
     }
   }
 

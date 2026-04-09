@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -20,6 +21,7 @@ class _SplashScreenState extends State<SplashScreen>
   bool _animationCompleted = false;
   bool _authResolved = false;
   bool _isLoggedIn = false;
+  bool _profileCompleted = false;
 
   @override
   void initState() {
@@ -60,6 +62,14 @@ class _SplashScreenState extends State<SplashScreen>
   Future<void> _checkAuthState() async {
     try {
       final user = await FirebaseAuth.instance.authStateChanges().first;
+      if (user != null) {
+        final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+        if (doc.exists) {
+          final data = doc.data() as Map<String, dynamic>;
+          _profileCompleted = data['profileCompleted'] as bool? ?? false;
+        }
+      }
+      
       if (mounted) {
         setState(() {
           _isLoggedIn = user != null;
@@ -79,7 +89,7 @@ class _SplashScreenState extends State<SplashScreen>
     }
   }
 
-  void _navigateIfReady() {
+  void _navigateIfReady() async {
     if (_animationCompleted && _authResolved) {
       if (_isLoggedIn) {
         context.go('/');
@@ -112,10 +122,25 @@ class _SplashScreenState extends State<SplashScreen>
                 scale: _scaleAnimation.value,
                 child: Opacity(
                   opacity: _opacityAnimation.value,
-                  child: Image.asset(
-                    'assets/images/logo.png',
-                    width: 300,
-                    fit: BoxFit.contain,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.asset(
+                        'assets/images/logo.png',
+                        width: 300,
+                        fit: BoxFit.contain,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Coach your skills. Master your future.',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              color: AppTheme.textSecondary,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 1.2,
+                            ),
+                      ),
+                    ],
                   ),
                 ),
               );

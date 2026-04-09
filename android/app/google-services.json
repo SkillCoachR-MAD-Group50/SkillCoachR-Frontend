@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "771644879523",
+    "project_id": "skillcoachr-c39ad",
+    "storage_bucket": "skillcoachr-c39ad.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:771644879523:android:918ac9bbb2f15a7335c516",
+        "android_client_info": {
+          "package_name": "com.skillcoachr.skillcoachr_frontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCexuhVsUpCZzjX61tegyckqPMpa1I9mIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

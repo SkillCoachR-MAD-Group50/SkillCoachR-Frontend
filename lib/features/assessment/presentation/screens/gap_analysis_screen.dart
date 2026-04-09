@@ -9,6 +9,7 @@ import '../providers/assessment_provider.dart';
 import '../../../profile_setup/presentation/providers/profile_setup_provider.dart';
 import '../../../../core/services/ai_service.dart';
 import '../../../../core/services/app_prefs.dart';
+import '../../../../core/services/auth_service.dart';
 
 
 class GapAnalysisScreen extends ConsumerWidget {
@@ -370,7 +371,7 @@ class GapAnalysisScreen extends ConsumerWidget {
             const SizedBox(height: 32),
             
             // Generate Roadmap CTA
-            _GenerateRoadmapButton(careerGoal: careerGoal),
+            _GenerateRoadmapButton(careerGoal: careerGoal, targetSkill: nextStepSkill.name),
             ],
           ),
         );
@@ -507,27 +508,30 @@ class GapAnalysisScreen extends ConsumerWidget {
   }
 }
 
-class _GenerateRoadmapButton extends StatefulWidget {
+class _GenerateRoadmapButton extends ConsumerStatefulWidget {
   final String careerGoal;
-  const _GenerateRoadmapButton({required this.careerGoal});
+  final String targetSkill;
+  const _GenerateRoadmapButton({required this.careerGoal, required this.targetSkill});
 
   @override
-  State<_GenerateRoadmapButton> createState() => _GenerateRoadmapButtonState();
+  ConsumerState<_GenerateRoadmapButton> createState() => _GenerateRoadmapButtonState();
 }
 
-class _GenerateRoadmapButtonState extends State<_GenerateRoadmapButton> {
+class _GenerateRoadmapButtonState extends ConsumerState<_GenerateRoadmapButton> {
   bool _loading = false;
 
   Future<void> _generate() async {
     setState(() => _loading = true);
     try {
-      // For now, using careerGoal as both goal and target skill if we don't have a separate skill
       final goal = widget.careerGoal;
-      final skill = widget.careerGoal; 
+      final skill = widget.targetSkill; 
       
       final milestones = await AIService.generateRoadmap(goal, skill);
       await AppPrefs.save(goal, skill, milestones);
       
+      // Update profile status in Firestore
+      await ref.read(authServiceProvider).completeProfile();
+
       if (!mounted) return;
       context.go('/dashboard', extra: {
         'goal': goal,

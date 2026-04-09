@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,6 +33,9 @@ class AuthService {
         
         // Optionally update display name in Firebase Auth
         await user.updateDisplayName(name);
+        
+        // Per user request: Force sign out so they must manually log in next
+        await _firebaseAuth.signOut();
       }
     } catch (e) {
       rethrow;
@@ -73,6 +77,29 @@ class AuthService {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      await _firebaseAuth.signOut();
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('jwt_token');
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> completeProfile() async {
+    try {
+      final user = _firebaseAuth.currentUser;
+      if (user != null) {
+        await _firestore.collection('users').doc(user.uid).update({
+          'profileCompleted': true,
+        });
+      }
+    } catch (e) {
+      debugPrint('Error updating profile completion: $e');
     }
   }
 }

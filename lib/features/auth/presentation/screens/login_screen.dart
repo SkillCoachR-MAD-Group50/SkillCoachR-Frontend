@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/services/auth_service.dart';
+import '../../../../core/services/app_prefs.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/models/milestone.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -38,11 +40,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       );
 
       if (mounted) {
-        if (profileCompleted) {
-          context.go('/'); // Navigate Home
-        } else {
-          context.go('/profile-setup'); // Navigate Onboarding
-        }
+        context.go('/');
       }
     } catch (e) {
       if (mounted) {

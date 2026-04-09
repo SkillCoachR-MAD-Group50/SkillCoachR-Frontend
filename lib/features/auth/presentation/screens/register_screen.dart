@@ -41,8 +41,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       );
 
       if (mounted) {
-        // According to flow: successfully created, profile is false -> redirect to Onboarding
-        context.go('/profile-setup');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Account created successfully. Please log in!'),
+            backgroundColor: AppTheme.success,
+          ),
+        );
+        context.go('/login');
       }
     } catch (e) {
       if (mounted) {
